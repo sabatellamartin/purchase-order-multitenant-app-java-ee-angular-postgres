@@ -1,0 +1,96 @@
+
+ <div class="container">
+   <div class="section"></div>
+   <div class="section"></div>
+   <div class="row">
+     <div class="col s12 m12">
+       <div class="card">
+         <div class="card-content">
+           <span class="card-title center">Perfíl</span>
+           <div class="section"></div>
+           <table class="centered">
+             <thead></thead>
+             <tbody>
+               <tr>
+                 <td><strong>Rol</strong></td>
+                 <td>{{sesion.rol}}</td>
+               </tr>
+               <tr>
+                 <td><strong>Usuario</strong></td>
+                 <td>{{sesion.username}}</td>
+               </tr>
+               <tr>
+                 <td><strong>Email</strong></td>
+                 <td>{{sesion.email}}</td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+         <div class="card-action center">
+           <a class='waves-effect waves-light btn teal' href="/assets/apk/app-debug.apk" target="_self" download="distrity.apk">
+             Descargar aplicación
+             <i class="material-icons right">get_app</i>
+           </a>
+           <a class="waves-effect waves-light btn" (click)="openModal()">
+             Cambiar password
+             <i class="material-icons right">verified_user</i>
+           </a>
+         </div>
+       </div>
+     </div>
+   </div>
+   <div class="section"></div>
+   <div class="section"></div>
+ </div>
+
+ <!-- Modal Structure -->
+ <div id="modalForm"
+      class="modal"
+      materialize="modal"
+      [materializeParams]="[{dismissible: false}]"
+      [materializeActions]="modalForm">
+   <div class="modal-content">
+     <h5>{{modalTitle}}</h5>
+     <div class="row" *ngIf="password">
+       <form class="col s12">
+         <div class="row">
+           <div class="col s12 m4">
+             <!-- Old -->
+             <label for="input-old">* Password actual</label>
+             <input id="input-old"
+             type="password"
+             class="validate"
+             [(ngModel)]="password.clearOld"
+             [ngModelOptions]="{standalone: true}"
+             #clearOld required>
+           </div>
+           <div class="col s12 m4">
+             <!-- New -->
+             <label for="input-new">* Password nuevo</label>
+             <input id="input-new"
+             type="password"
+             class="validate"
+             [(ngModel)]="password.clearNew"
+             [ngModelOptions]="{standalone: true}"
+             #clearNew required>
+           </div>
+           <div class="col s12 m4">
+             <!-- reNew -->
+             <label for="input-renew">* Repetir password nuevo</label>
+             <input id="input-renew"
+             type="password"
+             class="validate"
+             [(ngModel)]="password.repeatNew"
+             [ngModelOptions]="{standalone: true}"
+             #repeatNew required>
+           </div>
+         </div>
+       </form>
+     </div>
+   </div>
+   <div class="modal-footer">
+     <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
+     <a class="modal-action modal-close waves-effect waves-green btn-flat"
+     (click)="changePasswordAction()">Cambiar password</a>
+   </div>
+ </div>

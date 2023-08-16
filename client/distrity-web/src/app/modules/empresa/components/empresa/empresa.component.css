@@ -1,0 +1,16 @@
+
+#breadcrumbs-col {
+  padding-left: 20px;
+}
+
+#btn-delete-forever, #btn-lock, #btn-unlock, #btn-renew {
+  margin-left: 5px;
+}
+
+.btn-inter-space {
+  margin-left: 5px;
+}
+
+.dropdown-trigger {
+  width: 260px;
+}

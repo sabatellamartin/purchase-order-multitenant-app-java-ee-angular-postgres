@@ -1,0 +1,239 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Pedido {{ selectedDocumento.numeroDocumento }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div (swipe)="swipeEvent($event)">
+
+    <ion-fab right bottom>
+      <button ion-fab color="primary" (click)="pdf()">
+        <ion-icon name="download"></ion-icon>
+      </button>
+    </ion-fab>
+
+    <ion-card *ngIf="selectedDocumento.cliente">
+      <ion-item text-center>
+        <h1>{{ selectedDocumento.cliente?.nombreComercial }}</h1>
+        <h2>{{ selectedDocumento.cliente?.razonSocial }}</h2>
+        <h3>{{ selectedDocumento.cliente.tipoEmpresa?.descripcion }} ({{ selectedDocumento.cliente.tipoEmpresa?.sigla }})</h3>
+        <h3>{{ selectedDocumento.cliente?.rubro }}</h3>
+        <h3>{{ selectedDocumento.cliente?.rut }}</h3>
+      </ion-item>
+    </ion-card>
+
+    <ion-list *ngIf="selectedDocumento">
+      <ion-list-header>
+        Pedido
+      </ion-list-header>
+      <ion-item>{{ selectedDocumento.fecha | date: 'd/M/yy, h:mm a' }}</ion-item>
+      <ion-item>{{ selectedDocumento.vencimiento | date: 'd/M/yy, h:mm a' }}</ion-item>
+      <ion-item>{{ selectedDocumento.estado }}</ion-item>
+      <ion-item>{{ selectedDocumento.moneda?.descripcion }}</ion-item>
+      <ion-item>{{ selectedDocumento.usuario.username }}</ion-item>
+    </ion-list>
+
+
+    <ion-card *ngIf="selectedDocumento.sucursal">
+      <ion-item text-center>
+        <h1>{{ selectedDocumento.sucursal?.nombre }}</h1>
+        <h2 *ngIf="selectedDocumento.sucursal?.casaCentral">CASA CENTRAL</h2>
+        <h3>{{ selectedDocumento.sucursal.direccion?.ubicacion }}</h3>
+      </ion-item>
+    </ion-card>
+
+    <ion-grid *ngIf="selectedDocumento.sucursal">
+      <ion-row class="subtitulos">
+        <ion-col>
+            <div>
+              <h5>Info Envío</h5>
+            </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="rows">
+        <ion-col class="colums">
+          <span>{{ selectedDocumento.sucursal.nombre }}</span>
+        </ion-col>
+        <ion-col class="colums2">
+          <span *ngIf="selectedDocumento.sucursal.casaCentral">CASA CENTRAL</span>
+          <span *ngIf="!selectedDocumento.sucursal.casaCentral">SUCURSAL</span>
+        </ion-col>
+      </ion-row>
+      <ion-row class="rows">
+        <ion-col class="colums2">
+          <span>{{ selectedDocumento.sucursal.direccion?.ubicacion }}</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-list>
+      <ion-list-header>
+        Detalle Envío
+      </ion-list-header>
+      <ion-item *ngFor="let detalle of selectedDocumento.detalles">
+        <h2>{{ detalle.articulo.nombre }}</h2>
+        <h3>{{ detalle.articulo.descripcion }}</h3>
+        <p>
+          <span class="cantidadParcial">{{ detalle.cantidad }} {{ detalle.articulo.unidad.codigo }} • </span>
+          <span>{{ selectedDocumento.moneda?.sigla }} {{ detalle.precio }}/{{ detalle.articulo.unidad.codigo }} • </span>
+          <span>{{ detalle.descuento }}% dto • </span>
+          <span>{{ detalle.articulo.impuesto?.porcentaje }}% imp</span>
+        </p>
+        <div item-end>
+          <h4 class="precioUnitario">{{ selectedDocumento.moneda?.sigla }} {{ precioUnitario(detalle) }}</h4>
+          <h4 class="precioUnitario">{{ selectedDocumento.moneda?.sigla }} {{ precioImpuesto(detalle) }}</h4>
+          <h3 class="precioParcial">{{ selectedDocumento.moneda?.sigla }} {{ precioParcial(detalle) }}</h3>
+        </div>
+      </ion-item>
+    </ion-list>
+
+
+    <ion-list *ngIf="selectedDocumento">
+      <ion-list-header>
+        Total
+      </ion-list-header>
+      <ion-item>{{ selectedDocumento.moneda?.sigla }} {{ selectedDocumento.total }}</ion-item>
+    </ion-list>
+
+
+  <!--
+    {
+        "id": 1,
+        "fecha": 1554560702169,
+        "vencimiento": 1557152702169,
+        "numeroDocumento": "OV1554560702",
+        "moneda": {
+            "id": 1,
+            "codigo": "1",
+            "descripcion": "PESOS",
+            "sigla": "$",
+            "flagUrl": null,
+            "codigoDgi": "1",
+            "orden": 1
+        },
+        "detalles": [
+            {
+                "id": 1,
+                "cantidad": 3,
+                "descuento": 0,
+                "precio": 600,
+                "articulo": {
+                    "id": 2,
+                    "codigo": "456",
+                    "codigoBarra": "1231231231230",
+                    "nombre": "ARROZ",
+                    "descripcion": "ARROZ MEDIO GRANO",
+                    "precioCompra": 500,
+                    "precioVenta": 600,
+                    "precioBase": 400,
+                    "porcentajeDescuento": 1,
+                    "observaciones": "FUNDA CON 12 KG DE ARROZ",
+                    "fechaAlta": null,
+                    "fechaBaja": null,
+                    "unidad": {
+                        "id": 1,
+                        "codigo": "KG",
+                        "descripcion": "KILO GRAMO"
+                    }
+                }
+            },
+            {
+                "id": 2,
+                "cantidad": 3,
+                "descuento": 0,
+                "precio": 140,
+                "articulo": {
+                    "id": 4,
+                    "codigo": "333",
+                    "codigoBarra": "3333333333333333",
+                    "nombre": "pure de papas",
+                    "descripcion": "pure marca purapapa ",
+                    "precioCompra": 120,
+                    "precioVenta": 140,
+                    "precioBase": 120,
+                    "porcentajeDescuento": 5,
+                    "observaciones": "marca purapapa",
+                    "fechaAlta": null,
+                    "fechaBaja": null,
+                    "unidad": {
+                        "id": 1,
+                        "codigo": "KG",
+                        "descripcion": "KILO GRAMO"
+                    }
+                }
+            }
+        ],
+        "usuario": {
+            "id": 2,
+            "username": "vendedor",
+            "email": "ventas@distrity.com",
+            "alta": 1544854150392,
+            "baja": null,
+            "bloqueado": null,
+            "rol": "VENTAS",
+            "tenant": {
+                "id": 1,
+                "nombre": "slave",
+                "alta": 1544854150392,
+                "baja": null
+            }
+        },
+        "cliente": {
+            "id": 1,
+            "rut": "215123456789",
+            "razonSocial": "The critical hause",
+            "nombreComercial": "Criticalhause",
+            "rubro": "Industria tecnológica",
+            "telefono": "098035962",
+            "web": "criticalhause.com",
+            "email": "criticalhouse@gmail.com",
+            "alta": 1554435605701,
+            "baja": null,
+            "referente": "Sergio Ramos",
+            "observacion": "Empresa con buena relacion",
+            "horario": "de 8 a 16hs",
+            "tipoEmpresa": {
+                "id": 1,
+                "descripcion": "SOCIEDAD ANONIMA",
+                "sigla": "SA"
+            },
+            "calificacion": {
+                "id": 4,
+                "codigo": "4",
+                "descripcion": "MUY BUENA"
+            },
+            "sucursales": [
+                {
+                    "id": 1,
+                    "nombre": "SUCURSAL nro A1",
+                    "casaCentral": true,
+                    "direccion": {
+                        "id": 1,
+                        "ubicacion": "1359,1361, Bulevar Artigas, Parque Rodó, Montevideo, 11601, Uruguay",
+                        "featureId": null,
+                        "longitud": null,
+                        "latitud": null
+                    }
+                },
+                {
+                    "id": 2,
+                    "nombre": "SUCURSAL nro A2",
+                    "casaCentral": false,
+                    "direccion": {
+                        "id": 2,
+                        "ubicacion": "2838,2838 BIS, General Gregorio Suárez, Punta Carretas, Montevideo, 11303, Uruguay",
+                        "featureId": null,
+                        "longitud": null,
+                        "latitud": null
+                    }
+                }
+            ]
+        }
+    }
+  -->
+</div>
+</ion-content>

@@ -1,0 +1,75 @@
+<div class="row">
+<div class="col s12 m6">
+  <div class="card-panel">
+    <!-- Column maps -->
+    <div class="row">
+      <div class="input-field col s10 m10">
+        <input id="input-search"
+        type="text"
+        class="validate"
+        placeholder="Canelones 1360, Montevideo, Uruguay"
+        [(ngModel)]="addressQuery"
+        [ngModelOptions]="{standalone: true}">
+        <label for="input-search">Buscar dirección</label>
+      </div>
+      <div class="input-field col s2 m2">
+        <button class="btn btn-floating waves-effect waves-light tooltipped"
+                materialize="tooltip"
+                data-position="bottom"
+                data-tooltip="Buscar dirección"
+                type="submit"
+                name="action"
+                (click)="searchAddressAction()">
+          <i class="material-icons">location_searching</i>
+        </button>
+      </div>
+    </div>
+    <!-- Mapa -->
+    <div id="map" class="map"></div>
+    <!-- Coordenadas
+    <div id="mouse-position"></div>-->
+    <!-- Search Map Results -->
+    <div class="card-panel" *ngIf="addresses.length==0">
+      <strong>Sin resultados. </strong>
+      <span>Busque una dirección o marque una locación en el mapa para encontrar resultados</span>
+    </div>
+    <div class="row" *ngIf="addresses.length>0">
+      <div class="col s12 m12">
+        <ul class="collapsible" materialize="collapsible" data-collapsible="accordion">
+          <li *ngFor="let address of addresses">
+            <div class="collapsible-header">
+              <i class="material-icons left">arrow_drop_down</i>
+              {{address.display_name}}
+            </div>
+            <div class="collapsible-body">
+              <div class="row">
+                <div class="col m12 s12">
+                  <p>Dirección: {{address.display_name}}</p>
+                  <p>Clase/Tipo: {{address.class}} {{address.type}}</p>
+                  <p>Código Postal: {{address.address.postcode}}</p>
+                  <p>Calle/Número: {{address.address.road}} {{address.address.house_number}}</p>
+                  <p>Localidad: {{address.address.suburb}}</p>
+                  <p>Ciudad/Estado: {{address.address.city}} ({{address.address.state}})</p>
+                  <p>País/Código: {{address.address.country}} ({{address.address.country_code}})</p>
+                  <p>Coordenadas: longitud {{address.lon}}, latitud ({{address.lat}})</p>
+                </div>
+                <div class="col m12 s12">
+                  <a class="waves-effect waves-light btn tooltipped right"
+                    materialize="tooltip"
+                    data-position="bottom"
+                    data-tooltip="Usar dirección y ubicación"
+                    (click)="loadAddressAction(address)">
+                    Usar ubicación
+                    <i class="material-icons right">add_location</i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- CardPanel -->
+</div><!-- Col -->
+</div><!--Row-->

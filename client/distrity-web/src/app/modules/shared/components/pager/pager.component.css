@@ -1,0 +1,8 @@
+
+.pagination li.active a {
+  background: #00ab99;
+}
+
+#pagination-control {
+  padding-top: 10px;
+}

@@ -1,0 +1,83 @@
+
+ <div class="container">
+   <div class="section"></div>
+   <div class="section"></div>
+   <div class="row">
+     <div class="col s12 m6">
+       <!-- CARD FORM INIT -->
+       <div class="row">
+         <div class="col s12 m12">
+           <img class="center-block" style="width:80px;" src="{{logo}}">
+         </div>
+       </div>
+       <h4 class="center">{{title}}</h4>
+       <h6 class="center">{{by}}</h6>
+       <p class="flow-text center">{{subtitle}}</p>
+       <blockquote class="center">
+         {{description}}
+       </blockquote>
+       <!-- ERROR LOGIN -->
+       <div class="card-panel amber darken-1" *ngIf="error">
+         <span class="white-text text-darken-2"><strong>Credenciales incorrectas</strong>, acceso no autorizado.</span>
+       </div>
+     </div>
+     <div class="col s12 m6">
+       <!-- CARD FORM INIT -->
+       <div class="card grey lighten-4">
+         <!--<div class="card-image waves-effect waves-block waves-light">
+           <img class="activator" style="width:100px;" src="{{logo}}">
+         </div>-->
+         <div class="card-content">
+           <div class="section"></div>
+           <span class="card-title black-text">
+             <i class="material-icons">verified_user</i>
+             Iniciar sesión
+           </span>
+           <div class="section"></div>
+           <form>
+             <div class="row">
+               <div class="input-field col s12">
+                 <input id="email"
+                 placeholder="Email"
+                 type="email"
+                 class="validate"
+                 [(ngModel)]="model.username"
+                 [ngModelOptions]="{standalone: true}"
+                 #username required>
+                 <label for="email">Correo electr&oacute;nico</label>
+               </div>
+             </div>
+             <div class="row">
+               <div class="input-field col s12">
+                 <input id="password"
+                 type="password"
+                 class="validate"
+                 placeholder="Contraseña"
+                 [(ngModel)]="model.password"
+                 [ngModelOptions]="{standalone: true}"
+                 #password required>
+                 <label for="password">Contraseña</label>
+               </div>
+               <!--<label style="float:right;margin-right:10px;">
+                 <a class='blue-text' routerLink="/auth/login">¿Olvidó su contraseña?</a>
+               </label>-->
+             </div>
+             <div class="row">
+               <div class="col s12">
+                 <a type="submit"
+                 class="waves-effect waves-light btn col s12"
+                 (click)="autenticar()"><i class="material-icons right">exit_to_app</i>Ingresar</a>
+               </div>
+             </div>
+           </form>
+           <div class="card-action" style="margin-bottom:-20px;" >
+             <label>
+               <a class='blue-text' href="/assets/apk/app-debug.apk" target="_self" download="distrity.apk"><b>Descargar aplicaci&oacute;n</b></a>
+             </label>
+           </div>
+         </div>
+      </div>
+      <!-- CARD FORM END -->
+     </div>
+   </div>
+ </div>

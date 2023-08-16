@@ -1,0 +1,21 @@
+<div class="row">
+  <div *ngFor="let cardItem of cardItems" class="col s12 m3">
+    <div [ngClass]="cardItem.class" *ngIf="cardItem.access">
+      <div class="card-content">
+        <a routerLink="{{ cardItem.route }}" class="black-text">
+        <span class="card-title">
+          <i *ngIf="cardItem.icon" class="material-icons left">{{ cardItem.icon | lowercase }}</i>
+          {{ cardItem.name }}
+        </span>
+        <p>{{ cardItem.description }}</p>
+        </a>
+      </div>
+      <!--
+      <div class="card-action">
+        <a routerLink="{{ cardItem.route }}" class="white-text">Acceder</a>
+      </div> -->
+    </div>
+  </div>
+</div>
+<!-- Map OpenLayers with Geoserver
+<app-mapa></app-mapa>-->

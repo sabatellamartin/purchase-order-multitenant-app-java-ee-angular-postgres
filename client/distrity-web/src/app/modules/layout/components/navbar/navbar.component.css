@@ -1,0 +1,15 @@
+
+.nav-wrapper{
+ /*background-color: #1565c0 !important; /*#428aff*/
+}
+
+.side-nav {
+  width: 350px;
+}
+
+#brand-image {
+  height: 50px;
+  width: auto;
+  margin-top: 3px;
+  margin-left: 15px;
+}

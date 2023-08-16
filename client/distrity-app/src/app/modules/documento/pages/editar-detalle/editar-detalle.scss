@@ -1,0 +1,20 @@
+page-editar-detalle {
+  #topButtons {
+    display: flex;
+    flex-direction: row;
+  }
+  #topButtons button {
+    flex:1;
+  }
+  .precioUnitario {
+    color: green;
+  }
+  .precioParcial {
+    color: green;
+    font-weight: bold;
+  }
+  .precioTotal {
+    color: green;
+    font-weight: bold;
+  }
+}

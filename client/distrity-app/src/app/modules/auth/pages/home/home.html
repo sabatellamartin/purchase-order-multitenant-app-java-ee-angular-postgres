@@ -1,0 +1,102 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title class="header-navbar-title" text-center>{{title}}</ion-title>
+    <button end ion-button menuToggle>
+      <ion-icon name="settings"></ion-icon>
+    </button>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top color="primary">
+    <ion-segment [(ngModel)]="segmentBusqueda" color="light" (ionChange)="onSegmentChange()">
+      <ion-segment-button value="PEDIDOS">
+        Pedidos
+      </ion-segment-button>
+      <ion-segment-button value="ARTICULOS">
+        Artículos
+      </ion-segment-button>
+      <ion-segment-button value="CLIENTES">
+        Clientes
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <!--SEARCH-->
+  <ion-toolbar color="primary">
+    <ion-searchbar
+    [(ngModel)]="searchTerm"
+    [formControl]="searchControl"
+    (ionInput)="onSearchInput()"
+    placeholder="Buscar"></ion-searchbar>
+  </ion-toolbar>
+
+</ion-header>
+
+<!--CONTENT-->
+<ion-content padding (swipe)="swipeEvent($event)">
+
+  <!--SPINNER-->
+  <div *ngIf="searching" class="spinner-container">
+   <ion-spinner></ion-spinner>
+  </div>
+
+  <!--SEGMENTS-->
+  <div [ngSwitch]="segmentBusqueda">
+
+    <!--PEDIDOS-->
+    <ion-list *ngSwitchCase="'PEDIDOS'">
+      <ion-item *ngFor="let documento of documentos" (tap)="verDocumento(documento)">
+        <h3>{{ documento.numeroDocumento }}</h3>
+        <h2>{{ documento.cliente?.nombreComercial }}</h2>
+        <h3>{{ documento.cliente?.rut }}</h3>
+        <div item-end>
+          <h3>{{ documento.usuario?.username }}</h3>
+          <h3>{{ documento.fecha | date:'d/M/yy, h:mm a' }}</h3>
+          <h3>{{ selectedMoneda?.sigla }} {{ documento.total }}</h3>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <!--ARTICULOS-->
+    <ion-list *ngSwitchCase="'ARTICULOS'">
+      <ion-item *ngFor="let articulo of articulos" (tap)="verArticulo(articulo)">
+        <h2>{{ articulo.nombre }}</h2>
+        <h3>{{ articulo.descripcion }}</h3>
+        <p>
+          <span class="articuloCodigo">{{ articulo.codigo }}</span>
+          <span> • {{ articulo.porcentajeDescuento }}% dto. máximo</span>
+        </p>
+        <div item-end>
+          <h2 class="precioVenta">${{ articulo.precioVenta }}</h2>
+          <p>x {{ articulo.unidad.codigo }}</p>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <!--CLIENTES-->
+    <ion-list *ngSwitchCase="'CLIENTES'">
+      <ion-item *ngFor="let cliente of clientes" (tap)="verCliente(cliente)">
+        <h2>{{ cliente.nombreComercial }}</h2>
+        <h3>{{ cliente.razonSocial }}</h3>
+        <div item-end>
+          <h3><ion-icon name="barcode"></ion-icon> {{ cliente.rut }}</h3>
+          <h3><ion-icon name="call"></ion-icon> {{ cliente.telefono }}</h3>
+        </div>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <!--
+  <ion-fab left bottom>
+    <button ion-fab (click)="showFilter = !showFilter" color="{{showFilter ? 'danger' : 'light'}}">
+      <ion-icon name="options"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-fab right bottom>
+      <button ion-fab color="primary" (click)="goToCrearDocumento()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>-->
+
+
+</ion-content>

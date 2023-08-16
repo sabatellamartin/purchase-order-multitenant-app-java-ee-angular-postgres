@@ -1,0 +1,175 @@
+<!-- Navegacion y ubicacion -->
+<nav materialize>
+  <div class="nav-wrapper">
+    <div id="breadcrumbs-col" class="col s12">
+      <a routerLink="/dashboard" class="breadcrumb">Ubicacion</a>
+      <a routerLink="/ubicacion/tipozona" class="breadcrumb">Gesti&oacute;n de tipos de zona</a>
+    </div>
+  </div>
+</nav>
+
+<div class="section"></div>
+
+<div class="row">
+  <form materialize class="col s12">
+    <div class="row">
+      <!-- Search -->
+      <div class="input-field col s10 m5">
+        <input id="input-search"
+        type="text"
+        class="validate"
+        placeholder="Busqueda por t&eacute;rmino"
+        [(ngModel)]="term"
+        [ngModelOptions]="{standalone: true}">
+        <label for="input-search">Buscar</label>
+      </div>
+      <div class="input-field col s2 m1">
+        <button class="btn btn-floating waves-effect waves-light tooltipped"
+                materialize="tooltip"
+                data-position="bottom"
+                data-tooltip="Búsqueda por término"
+                type="submit"
+                name="action"
+                (click)="syncSearch()">
+          <i class="material-icons">search</i>
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<div class="row">
+  <div class="col s12">
+    <!-- Tabla -->
+    <table class="responsive-table centered highlight">
+      <thead>
+        <tr>
+          <th>C&oacute;digo</th>
+          <th>Descripci&oacute;n</th>
+          <th>
+            <i class="material-icons">more_horiz</i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tipoZona of tipoZonas"
+            [class.active]="tipoZona === selectedTipoZona">
+          <td>{{tipoZona.codigo}}</td>
+          <td>{{tipoZona.descripcion}}</td>
+          <td>
+            <button class="btn-small btn-floating waves-effect waves-light blue tooltipped"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Editar"
+               type="button"
+               (click)="editAction(tipoZona)">
+               <i class="material-icons">edit</i>
+            </button>
+            <button id="btn-delete-forever" class="btn-small btn-floating waves-effect waves-light red tooltipped"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Borrar permantentemente"
+               type="button"
+               (click)="removeAction(tipoZona); $event.stopPropagation()">
+               <i class="material-icons">delete_forever</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Pagination -->
+  <div id="pagination-control" class="col s12 m4">
+    <ul class="pagination">
+      <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+      <li class="active"><a disabled>1</a></li>
+      <!--<li class="waves-effect"><a href="#!">2</a></li>
+      <li class="waves-effect"><a href="#!">3</a></li>
+      <li class="waves-effect"><a href="#!">4</a></li>
+      <li class="waves-effect"><a href="#!">5</a></li>-->
+      <li class="waves-effect"><a disabled><i class="material-icons">chevron_right</i></a></li>
+    </ul>
+  </div>
+  <div class="col s12 m8">
+    <!-- Info -->
+    <div class="card-panel">
+      <span class="black-text text-darken-2">Actualizado {{ searchTime | date:'dd/MM/yyyy hh:mm:ss aaa zzzz' }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Fixed Add Button -->
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large teal lighten-2 tooltipped"
+     materialize="tooltip"
+     data-position="left"
+     data-tooltip="Agregar"
+     type="button"
+     (click)="newAction()">
+    <i class="large material-icons">add</i>
+  </a>
+</div>
+
+<!-- Modal Structure -->
+<div id="modalForm"
+     class="modal"
+     materialize="modal"
+     [materializeParams]="[{dismissible: false}]"
+     [materializeActions]="modalForm">
+  <div class="modal-content">
+    <h5>{{modalTitle}}</h5>
+    <div class="row" *ngIf="selectedTipoZona">
+      <form class="col s12">
+        <!-- Id  -->
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="input-id"
+            type="number"
+            class="validate"
+            [(ngModel)]="selectedTipoZona.id"
+            [ngModelOptions]="{standalone: true}"
+            #tipoZonaId hidden>
+          </div>
+        </div>
+        <!-- Cedula & Username-->
+        <div class="row">
+          <div class="col s12 m6">
+            <!-- Sigla -->
+            <label for="input-codigo">C&oacute;digo</label>
+            <input id="input-codigo"
+            type="text"
+            class="validate"
+            placeholder="* C&oacute;digo"
+            [(ngModel)]="selectedTipoZona.codigo"
+            [ngModelOptions]="{standalone: true}"
+            #tipoZonaSigla required>
+          </div>
+        </div>
+        <!-- Email -->
+        <div class="row">
+          <div class="col s12">
+            <!-- Sigla -->
+            <label for="input-descripcion">Descripci&oacute;n</label>
+            <input id="input-descripcion"
+            type="text"
+            class="validate"
+            placeholder="* Descripci&oacute;n"
+            [(ngModel)]="selectedTipoZona.descripcion"
+            [ngModelOptions]="{standalone: true}"
+            #tipoZonaDescripcion required>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
+    <a class="modal-action modal-close waves-effect waves-green btn-flat"
+    *ngIf="selectedTipoZona"
+    (click)="save()">Guardar</a>
+  </div>
+</div>

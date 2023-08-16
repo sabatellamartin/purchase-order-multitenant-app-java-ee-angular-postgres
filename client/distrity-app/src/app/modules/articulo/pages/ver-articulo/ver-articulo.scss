@@ -1,0 +1,28 @@
+page-ver-articulo {
+/*
+  .grid-art {
+    border: 1px solid black;
+    outline-style: solid;
+    outline-color: red;
+    outline-width: medium;
+  }
+*/
+
+  .colums{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #c5cae9;
+  }
+  .colums2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rows{
+    //border: 1px solid #c5cae9;
+  //  border-top: 1px solid #c5cae9;
+    border-bottom: 1px solid #c5cae9;
+
+  }
+}

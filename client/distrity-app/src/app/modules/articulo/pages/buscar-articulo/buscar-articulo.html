@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title text-center>Artículos</ion-title>
+    <button end ion-button menuToggle>
+      <ion-icon name="settings"></ion-icon>
+    </button>
+  </ion-navbar>
+  <ion-toolbar color="primary">
+    <ion-searchbar
+    [(ngModel)]="searchTerm"
+    [formControl]="searchControl"
+    (ionInput)="onSearchInput()"
+    placeholder="Buscar artículos"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <!--
+  <ion-searchbar
+  [(ngModel)]="searchTerm"
+  [formControl]="searchControl"
+  (ionInput)="onSearchInput()"
+  placeholder="Buscar"></ion-searchbar>-->
+
+  <div *ngIf="searching" class="spinner-container">
+   <ion-spinner></ion-spinner>
+  </div>
+
+
+  <ion-list [virtualScroll]="articulos">
+
+    <ion-item *virtualItem="let articulo">
+      <h2>{{ articulo.nombre }}</h2>
+      <h3>{{ articulo.descripcion }}</h3>
+      <p>
+        <span class="articuloCodigo">{{ articulo.codigo }}</span>
+        <span> • {{ articulo.porcentajeDescuento }}% dto. máximo</span>
+      </p>
+      <div item-end>
+        <h2 class="precioVenta">${{ articulo.precioVenta }}</h2>
+        <p>x {{ articulo.unidad.codigo }}</p>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <!--
+  <ion-list>
+    <ion-item>
+      <ion-icon name="time" item-start></ion-icon>
+      Actualizado {{ searchTime | date:'mediumTime' }}
+    </ion-item>
+  </ion-list>
+  -->
+
+</ion-content>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+   xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+        http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+		
+   	<persistence-unit name="DistributionDS" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:jboss/datasources/DistributionDS</jta-data-source>
+
+		<class>com.app.distrity.model.tenant.Tenant</class>
+		
+		<class>com.app.distrity.model.auth.Usuario</class>
+		<class>com.app.distrity.model.auth.Administrador</class>
+		<class>com.app.distrity.model.auth.Operador</class>
+
+		<class>com.app.distrity.model.Persona</class>
+		<class>com.app.distrity.model.Consumidor</class>
+		<class>com.app.distrity.model.Empleado</class>
+		<class>com.app.distrity.model.Referente</class>
+		
+		<class>com.app.distrity.model.Empresa</class>
+		<class>com.app.distrity.model.Proveedor</class>
+		<class>com.app.distrity.model.Cliente</class>
+		<class>com.app.distrity.model.Distribuidor</class>
+
+		<class>com.app.distrity.model.Sucursal</class>
+		<class>com.app.distrity.model.Almacen</class>
+
+		<class>com.app.distrity.model.Moneda</class>
+		<class>com.app.distrity.model.Documento</class>
+		<class>com.app.distrity.model.Detalle</class>
+		<class>com.app.distrity.model.OrdenCompra</class>
+		<class>com.app.distrity.model.OrdenVenta</class>
+
+		<class>com.app.distrity.model.Articulo</class>
+		<class>com.app.distrity.model.Unidad</class>
+		<class>com.app.distrity.model.Impuesto</class>
+		<class>com.app.distrity.model.Categoria</class>
+		
+		<class>com.app.distrity.model.TipoEmpresa</class>
+		<class>com.app.distrity.model.TipoDocumento</class>
+		
+		<class>com.app.distrity.model.TipoDireccion</class>
+		<class>com.app.distrity.model.Direccion</class>
+
+		<class>com.app.distrity.model.TipoZona</class>
+		<class>com.app.distrity.model.Zona</class>
+		
+		<class>com.app.distrity.model.Feature</class>
+
+      	<properties>
+      		
+      		<!---->
+      		<property name="hibernate.hbm2ddl.auto" value="update" />
+      		<property name="hibernate.show_sql" value="false" />
+      		
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect" />
+			<property name="hibernate.enable_lazy_load_no_trans" value="true" />
+			
+			<property name="hibernate.default_schema" value="slave" />
+			
+			
+			<property name="hibernate.multiTenancy" value="SCHEMA"/>
+			<property name="hibernate.tenant_identifier_resolver" value="com.app.distrity.util.tenant.CurrentTenantIdentifierResolverImpl"/>
+			<property name="hibernate.multi_tenant_connection_provider" value="com.app.distrity.util.tenant.MultiTenantConnectionProviderImpl"/>
+			
+		</properties>
+		
+	</persistence-unit>    
+    
+</persistence> <!-- create, update, create-drop, validate -->

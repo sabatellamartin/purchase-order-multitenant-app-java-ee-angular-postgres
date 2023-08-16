@@ -1,0 +1,442 @@
+<!-- Navegacion y ubicacion -->
+<nav materialize>
+  <div class="nav-wrapper">
+    <div id="breadcrumbs-col" class="col s12">
+      <a routerLink="/" class="breadcrumb">Dashboard</a>
+      <a routerLink="/empresa/dashboard" class="breadcrumb">Empresas</a>
+      <a routerLink="/empresa/form" class="breadcrumb">{{title}}</a>
+      <ul class="right hide-on-med-and-down" style="margin-top:15px">
+        <li>
+          <a routerLink="/empresa/dashboard" class="waves-effect waves-light btn right">
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="section"></div>
+
+
+<!-- Fixed Add Button
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large tooltipped"
+     materialize="tooltip"
+     data-position="left"
+     data-tooltip="Guardar empresa"
+     type="button"
+     (click)="newAction()">
+    <i class="large material-icons">save</i>
+  </a>
+</div> -->
+<div class="fixed-action-btn center">
+  <a class="btn-floating btn-large red tooltipped"
+    materialize="tooltip"
+    data-position="left"
+    data-tooltip="Acciones">
+    <i class="large material-icons">more_vert</i>
+  </a>
+  <ul>
+    <li><a class="btn-floating red tooltipped"
+    materialize="tooltip"
+    data-position="left"
+    data-tooltip="Cancelar y volver"
+    routerLink="/empresa/dashboard"><i class="material-icons">clear</i></a></li>
+    <li><a class="btn-floating blue tooltipped"
+      materialize="tooltip"
+      data-position="left"
+      data-tooltip="Guardar o modificar empresa"
+      (click)="save()"><i class="material-icons">save</i></a></li>
+  </ul>
+</div>
+
+<!-- Save Btns
+<div class="col m12 s12 center">
+  <a class="waves-effect waves-green btn-flat" routerLink="/empresa/dashboard">Cancelar</a>
+  <a class="modal-action modal-close waves-effect waves-green btn teal" (click)="save()">Guardar Empresa</a>
+</div>-->
+
+    <div class="row">
+      <div class="col s12 m12">
+        <div class="card-panel">
+          <!-- Form Relacion -->
+          <h6 class="card-title grey-text">Relación empresarial</h6>
+          <div class="row">
+            <!-- Id -->
+            <input id="input-id"
+            type="number"
+            class="validate"
+            [(ngModel)]="selectedEmpresa.id"
+            [ngModelOptions]="{standalone: true}"
+            #empresaId hidden>
+            <!-- Relacion empresarial -->
+            <div class="col s12 m2">
+              <label for="input-relacion">Relación comercial</label>
+              <select id="input-relacion"
+              materialize="material_select"
+              [materializeSelectOptions]="selectedRelacion"
+              [(ngModel)]="selectedRelacion"
+              [ngModelOptions]="{standalone: true}"
+              (ngModelChange)="onChangeRelacion($event)"
+              [disabled]="disabledRelacion"
+              #empresaRelacion>
+                <option *ngFor="let relacion of relaciones"
+                        [attr.selected]="relacion === selectedRelacion"
+                        [ngValue]="relacion" >{{relacion}}</option>
+              </select>
+            </div>
+            <!-- Calificacion -->
+            <div class="col s12 m2">
+              <label for="input-calificacion">Calificación/Categorización</label>
+              <select id="input-calificacion"
+              materialize="material_select"
+              [materializeSelectOptions]="selectedCalificacion"
+              [(ngModel)]="selectedCalificacion"
+              [ngModelOptions]="{standalone: true}"
+              [compareWith]="compareFn"
+              #empresaCalificacion>
+              <option *ngFor="let calificacion of calificaciones"
+              [ngValue]="calificacion" >{{calificacion.descripcion}}</option>
+              </select>
+            </div>
+            <!-- Observacion
+            <div class="col s12 m8">
+              <label for="input-observacion">Observación</label>
+              <textarea id="textarea-observacion" rows="1"
+              class="materialize-textarea"
+              placeholder="Las ventas las atiende el dueño a su vez trabaja en mostrador, visitarlo de 15 a 16 hs"
+              [(ngModel)]="selectedEmpresa.observacion"
+              [ngModelOptions]="{standalone: true}"
+              #empresaObservacion></textarea>
+            </div> -->
+            <div class="col s12 m8">
+              <label for="input-observacion">Observación</label>
+              <input id="input-observacion"
+              type="text"
+              class="validate"
+              placeholder="Las ventas las atiende el dueño a su vez trabaja en mostrador, visitarlo de 15 a 16 hs"
+              [(ngModel)]="selectedEmpresa.observacion"
+              [ngModelOptions]="{standalone: true}"
+              #empresaObservacion>
+            </div>
+          </div>
+        </div><!-- CardPanel -->
+      </div><!-- Col -->
+      <div class="col s12 m6">
+        <div class="card-panel">
+          <!-- Form Empresas -->
+          <h6 class="card-title grey-text">Datos de empresa</h6>
+          <div class="row">
+            <!-- Tipo Empresa -->
+            <div class="col s12 m8">
+              <label for="input-tipo-empresa">Tipo de entidad empresarial</label>
+              <select id="input-tipo-empresa"
+              materialize="material_select"
+              [materializeSelectOptions]="selectedTipoEmpresa"
+              [(ngModel)]="selectedTipoEmpresa"
+              [ngModelOptions]="{standalone: true}"
+              [compareWith]="compareFn"
+              #empresaTipoEmpresa>
+              <option *ngFor="let tipoEmpresa of tiposEmpresas"
+              [ngValue]="tipoEmpresa" >{{tipoEmpresa.descripcion}} ({{tipoEmpresa.sigla}})</option>
+              </select>
+            </div>
+            <!-- RUT -->
+            <div class="col s12 m4">
+              <label for="input-rut">RUT</label>
+              <input id="input-rut"
+              type="text"
+              class="validate"
+              placeholder="215256842375"
+              [(ngModel)]="selectedEmpresa.rut"
+              [ngModelOptions]="{standalone: true}"
+              #empresaRut>
+            </div>
+            <!-- rubro -->
+            <div class="col s12 m12">
+              <label for="input-rubro">Rubro</label>
+              <input id="input-rubro"
+              type="text"
+              class="validate"
+              placeholder="Repuestos para maquinaria industrial"
+              [(ngModel)]="selectedEmpresa.rubro"
+              [ngModelOptions]="{standalone: true}"
+              #empresaRubro>
+            </div>
+            <!-- razonSocial -->
+            <div class="col s12 m6">
+              <label for="input-razon-social">Razón social</label>
+              <input id="input-razon-social"
+              type="text"
+              class="validate"
+              placeholder="MakiteSA"
+              [(ngModel)]="selectedEmpresa.razonSocial"
+              [ngModelOptions]="{standalone: true}"
+              #empresaRazonSocial>
+            </div>
+            <!-- nombreComercial -->
+            <div class="col s12 m6">
+              <label for="input-nombre-comercial">* Nombre comercial</label>
+              <input id="input-nombre-comercial"
+              type="text"
+              class="validate"
+              placeholder="Makite Maquinas"
+              [(ngModel)]="selectedEmpresa.nombreComercial"
+              [ngModelOptions]="{standalone: true}"
+              #empresaNombreComercial required>
+            </div>
+          </div>
+        </div><!--CardPanel-->
+      </div><!--Col-->
+      <div class="col s12 m6">
+        <div class="card-panel">
+          <h6 class="card-title grey-text">Información de contacto</h6>
+          <!-- telefono & web -->
+          <div class="row">
+            <!-- Horario -->
+            <div class="col s12 m6">
+              <label for="input-horario">Horario de atención</label>
+              <input id="input-horario"
+              type="text"
+              class="validate"
+              placeholder="Abierto de 8 a 16hs"
+              [(ngModel)]="selectedEmpresa.horario"
+              [ngModelOptions]="{standalone: true}"
+              #empresaHorario>
+            </div>
+            <div class="col s12 m6">
+              <label for="input-telefono">Teléfono</label>
+              <input id="input-telefono"
+              type="text"
+              class="validate"
+              placeholder="+59898056233"
+              [(ngModel)]="selectedEmpresa.telefono"
+              [ngModelOptions]="{standalone: true}"
+              #empresaTelefono>
+            </div>
+            <!-- Referente -->
+            <div class="col s12 m12">
+              <label for="input-referente">Referente</label>
+              <input id="input-referente"
+              type="text"
+              class="validate"
+              placeholder="Sergio Ramos (Encargado de compras), tel: +59898754123"
+              [(ngModel)]="selectedEmpresa.referente"
+              [ngModelOptions]="{standalone: true}"
+              #empresaReferente>
+            </div>
+            <!-- email -->
+            <div class="col s12 m6">
+              <label for="input-email">Email</label>
+              <input id="input-email"
+              type="email"
+              class="validate"
+              placeholder="ventas@makite.com"
+              [(ngModel)]="selectedEmpresa.email"
+              [ngModelOptions]="{standalone: true}"
+              #empresaEmail>
+            </div>
+            <!-- web -->
+            <div class="col s12 m6">
+              <label for="input-web">Web</label>
+              <input id="input-web"
+              type="text"
+              class="validate"
+              placeholder="http://makite.com"
+              [(ngModel)]="selectedEmpresa.web"
+              [ngModelOptions]="{standalone: true}"
+              #empresaWeb>
+            </div>
+          </div>
+        </div><!--CardPanel-->
+      </div><!--Col-->
+      <div class="col s12 m6">
+        <div class="card-panel">
+          <!-- Form Sucursales -->
+          <h6 class="card-title grey-text">Sucursales</h6>
+          <div class="row">
+            <!-- Id  -->
+            <input id="input-id-sucursal"
+            type="number"
+            class="validate"
+            [(ngModel)]="selectedSucursal.id"
+            [ngModelOptions]="{standalone: true}"
+            #sucursalId hidden>
+            <!-- Nombre Sucursal -->
+            <div class="col s12 m12">
+              <label for="input-nombre-sucursal">* Nombre sucursal</label>
+              <input id="input-nombre-sucursal"
+              type="text"
+              class="validate"
+              placeholder="Sucursal Palermo"
+              [(ngModel)]="selectedSucursal.nombre"
+              [ngModelOptions]="{standalone: true}"
+              #sucursalNombre required>
+            </div>
+            <!-- Direccion Sucursal -->
+            <div class="col s10 m10">
+              <label for="input-direccion-sucursal">Dirección</label>
+              <input id="input-direccion-sucursal"
+              type="text"
+              class="validate"
+              placeholder="Canelones 1370, Montevideo, Uruguay"
+              [(ngModel)]="selectedDireccion.ubicacion"
+              [ngModelOptions]="{standalone: true}"
+              #direccionUbicacion>
+            </div>
+            <!-- Botton add Sucursal -->
+            <div class="input-field col s2 m2">
+              <button id="btn-delete-forever" class="btn-small btn-floating waves-effect waves-light tooltipped"
+                 materialize="tooltip"
+                 data-position="top"
+                 data-tooltip="Agregar sucursal"
+                 type="button"
+                 (click)="addSucursalAction(); $event.stopPropagation()">
+                 <i class="material-icons">add</i>
+              </button>
+            </div>
+            <!-- observacion
+            <div class="col s12 m6">
+              <label for="input-direccion-observacion">Observación</label>
+              <input id="input-direccion-observacion"
+              type="text"
+              class="validate"
+              placeholder="Horario 8 a 15hs, entrar por deposito porton gris."
+              [(ngModel)]="selectedDireccion.observacion"
+              [ngModelOptions]="{standalone: true}"
+              #direccionObservacion>
+            </div>-->
+          </div>
+          <!-- Tabla Sucursales -->
+          <table class="responsive-table" *ngIf="selectedEmpresa.sucursales.length>0">
+            <thead>
+              <tr>
+                  <th>Sucursal</th>
+                  <th>Dirección</th>
+                  <th>...</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sucursal of selectedEmpresa.sucursales"
+                  [class.active]="sucursal === selectedSucursal">
+                <td>{{sucursal.nombre}}</td>
+                <td>{{sucursal.direccion?.ubicacion}}</td>
+                <td id="table-controls">
+                  <button *ngIf="sucursal.casaCentral" id="btn-central-sucursal" class="btn-small btn-floating waves-effect waves-light green tooltipped"
+                     materialize="tooltip"
+                     data-position="top"
+                     data-tooltip="Marcar como principal o casa central"
+                     type="button"
+                     (click)="centralSucursalAction(sucursal); $event.stopPropagation()">
+                     <i class="material-icons">home</i>
+                  </button>
+                  <button *ngIf="!sucursal.casaCentral" id="btn-central-sucursal" class="btn-small btn-floating waves-effect waves-light grey tooltipped"
+                     materialize="tooltip"
+                     data-position="top"
+                     data-tooltip="Marcar como principal o casa central"
+                     type="button"
+                     (click)="centralSucursalAction(sucursal); $event.stopPropagation()">
+                     <i class="material-icons">home</i>
+                  </button>
+                  <button id="btn-load-sucursal" class="btn-small btn-floating waves-effect waves-light blue tooltipped"
+                     materialize="tooltip"
+                     data-position="top"
+                     data-tooltip="Cargar/Marcar sucursal"
+                     type="button"
+                     (click)="loadSucursalAction(sucursal); $event.stopPropagation()">
+                     <i class="material-icons">place</i>
+                  </button>
+                  <button id="btn-remove-sucursal" class="btn-small btn-floating waves-effect waves-light red tooltipped"
+                     materialize="tooltip"
+                     data-position="top"
+                     data-tooltip="Borrar sucursal"
+                     type="button"
+                     (click)="removeSucursalAction(sucursal); $event.stopPropagation()">
+                     <i class="material-icons">delete</i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div><!-- CardPanel -->
+      </div><!-- Col -->
+
+
+<!-- Column maps
+      <div class="col s12 m6">
+        <div class="card-panel">
+
+          <div class="row">
+            <div class="input-field col s10 m10">
+              <input id="input-search"
+              type="text"
+              class="validate"
+              placeholder="Canelones 1360, Montevideo, Uruguay"
+              [(ngModel)]="addressQuery"
+              [ngModelOptions]="{standalone: true}">
+              <label for="input-search">Buscar dirección</label>
+            </div>
+            <div class="input-field col s2 m2">
+              <button class="btn btn-floating waves-effect waves-light tooltipped"
+                      materialize="tooltip"
+                      data-position="bottom"
+                      data-tooltip="Buscar dirección"
+                      type="submit"
+                      name="action"
+                      (click)="searchAddressAction()">
+                <i class="material-icons">location_searching</i>
+              </button>
+            </div>
+          </div>
+
+
+
+          <div id="map" class="map"></div>
+
+          <div class="card-panel" *ngIf="addresses.length==0">
+            <strong>Sin resultados. </strong>
+            <span>Busque una dirección o marque una locación en el mapa para encontrar resultados</span>
+          </div>
+          <div class="row" *ngIf="addresses.length>0">
+            <div class="col s12 m12">
+              <ul class="collapsible" materialize="collapsible" data-collapsible="accordion">
+                <li *ngFor="let address of addresses">
+                  <div class="collapsible-header">
+                    <i class="material-icons left">arrow_drop_down</i>
+                    {{address.display_name}}
+                  </div>
+                  <div class="collapsible-body">
+                    <div class="row">
+                      <div class="col m12 s12">
+                        <p>Dirección: {{address.display_name}}</p>
+                        <p>Clase/Tipo: {{address.class}} {{address.type}}</p>
+                        <p>Código Postal: {{address.address.postcode}}</p>
+                        <p>Calle/Número: {{address.address.road}} {{address.address.house_number}}</p>
+                        <p>Localidad: {{address.address.suburb}}</p>
+                        <p>Ciudad/Estado: {{address.address.city}} ({{address.address.state}})</p>
+                        <p>País/Código: {{address.address.country}} ({{address.address.country_code}})</p>
+                        <p>Coordenadas: longitud {{address.lon}}, latitud ({{address.lat}})</p>
+                      </div>
+                      <div class="col m12 s12">
+                        <a class="waves-effect waves-light btn tooltipped right"
+                          materialize="tooltip"
+                          data-position="bottom"
+                          data-tooltip="Usar dirección y ubicación"
+                          (click)="loadAddressAction(address)">
+                          Usar ubicación
+                          <i class="material-icons right">add_location</i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div> -->
+
+
+    </div><!--Row-->

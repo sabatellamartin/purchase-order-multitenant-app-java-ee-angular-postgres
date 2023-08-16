@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title class="header-navbar-title" text-center>Crear Pedido</ion-title>
+    <button end ion-button menuToggle>
+      <ion-icon name="settings"></ion-icon>
+    </button>
+  </ion-navbar>
+
+
+  <ion-toolbar>
+
+    <ion-title (click)="goToSelectCliente()">
+      <span *ngIf="!selectedCliente">[Seleccione cliente]</span>
+      <span *ngIf="selectedCliente" >{{selectedCliente.razonSocial}}</span>
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only  (click)="goToSelectCliente()">
+        <ion-icon name="contact"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="selectedCliente">
+    
+    <ion-title (click)="openSelectSucursal()">
+      <span class="toolbar-title-sucursal" *ngIf="!selectedSucursal">[Seleccione sucursal]</span>
+      <!--<p class="toolbar-title-sucursal" *ngIf="selectedSucursal" >{{selectedSucursal.nombre}}</p>-->
+      <p class="toolbar-title-sucursal" *ngIf="selectedSucursal?.direccion" >{{selectedSucursal.direccion?.ubicacion}}</p>
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openSelectSucursal()">
+        <ion-icon name="pin"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-list hidden>
+      <ion-item>
+        <ion-label>Sucursal</ion-label>
+        <ion-select [(ngModel)]="selectedSucursal" (ionChange)="onSelectChange($event)" #sucursalSelect okText="Seleccionar" cancelText="Cancelar">
+          <ion-option *ngFor="let sucursal of selectedCliente?.sucursales" [value]="sucursal">{{sucursal.nombre}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+ <div (swipe)="swipeEvent($event)">
+
+  <ion-list id="topList">
+
+    <ion-item-sliding *ngFor="let detalle of documentoLineas">
+      <ion-item class="itemBorder" (tap)="editDetalle(detalle)">
+        <h2>{{ detalle.articulo.nombre }}</h2>
+        <h3>{{ detalle.articulo.descripcion }}</h3>
+        <p>
+          <span class="cantidadParcial">{{ detalle.cantidad }} {{ detalle.articulo.unidad.codigo }} • </span>
+          <span>{{ selectedMoneda?.sigla }} {{ detalle.precio }}/{{ detalle.articulo.unidad.codigo }} • </span>
+          <span>{{ detalle.descuento }}% dto • </span>
+          <span>{{ detalle.articulo.impuesto?.porcentaje }}% imp</span>
+        </p>
+        <div item-end>
+          <h4 class="precioUnitario">{{ selectedMoneda?.sigla }} {{ precioUnitario(detalle) }}</h4>
+          <h4 class="precioUnitario">{{ selectedMoneda?.sigla }} {{ precioImpuesto(detalle) }}</h4>
+          <h3 class="precioParcial">{{ selectedMoneda?.sigla }} {{ precioParcial(detalle) }}</h3>
+        </div>
+      </ion-item>
+      <ion-item-options side="left">
+        <button ion-button color="light" (click)="removeDetalle(detalle)">
+          <ion-icon name="close"></ion-icon>
+          Quitar
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right"><!--
+        <button ion-button color="primary" (click)="editDetalle(detalle)">
+          <ion-icon name="create"></ion-icon>
+          Editar
+        </button> -->
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+
+
+
+<!--
+  <ion-avatar>
+    <img id="instruct-img" [src]="picture">
+  </ion-avatar>-->
+
+</div>
+
+<ion-fab right bottom>
+  <button ion-fab color="primary" (click)="goToSelectArticulo()"><ion-icon name="add"></ion-icon></button>
+  <!--
+  <ion-fab-list side="left">
+    <button ion-fab color="primary" (click)="saveOrden()"><ion-icon name="send"></ion-icon></button>
+    <button ion-fab color="danger" (click)="removeOrden()"><ion-icon name="trash"></ion-icon></button>
+    <button ion-fab color="light" (click)="selectArticulo()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab (click)="showOptions = !showOptions" color="{{showOptions ? 'danger' : 'light'}}"><ion-icon name="options"></ion-icon></button>
+  </ion-fab-list>
+  -->
+</ion-fab>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar color="#0099ff">
+    <ion-card>
+      <ion-card-content text-center (tap)="showTotalFull()">
+        Total <span id="precioTotal">{{ selectedMoneda?.sigla }}{{ total }}</span>
+      </ion-card-content>
+    </ion-card>
+
+    <div id="topButtons">
+      <button ion-button icon-end outline color="danger" (click)="removeOrden()">
+        Descartar
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-end color="primary" (click)="saveOrden()">
+        Crear
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </div>
+
+  </ion-toolbar>
+</ion-footer>

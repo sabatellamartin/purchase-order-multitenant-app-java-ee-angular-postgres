@@ -1,0 +1,30 @@
+page-ver-cliente {
+
+  .subtitulos{
+    text-align: center;
+    background-color: #e8eaf6;
+    border-right: #c5cae9;
+  }
+
+  .grid-fonts{
+    font-size: 17px;
+  }
+  .colums{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #c5cae9;
+  }
+  .colums2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rows{
+    //border: 1px solid #c5cae9;
+  //  border-top: 1px solid #c5cae9;
+    border-bottom: 1px solid #c5cae9;
+
+  }
+
+}

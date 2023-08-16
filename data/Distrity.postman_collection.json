@@ -1,0 +1,377 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Distribution",
+		"_postman_id": "124fae2e-ae2a-d4e6-38c3-81790c3e93ac",
+		"description": "Distribucion multitenant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TipoEmpresa",
+			"description": "",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"url": "http://localhost:8080/distrity-web/rest/tipo/empresas/add",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-TenantID",
+								"value": "public",
+								"description": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"sigla\":\"SA\",\"descripcion\":\"Sociedad Anonima\"}"
+						},
+						"description": "Save tipo empresa"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Empresa",
+			"description": "",
+			"item": [
+				{
+					"name": "Search empresas by Tipo",
+					"request": {
+						"url": "http://localhost:8080/distrity-web/rest/empresas/search/cliente/void",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huY3VlcnZvMjRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huY3VlcnZvMjRAZ21haWwuY29tIiwiZW1haWwiOiJqb2huY3VlcnZvMjRAZ21haWwuY29tIiwic2NvcGUiOiJWRU5UQVMifQ.-jp25pZZ8gFVzvvhPVLemdHIk_CHdULO-lONSN2cs70",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Busca empresas por tipo"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documento",
+			"description": "Documentos ordenes, facturas, etc",
+			"item": [
+				{
+					"name": "Documento save",
+					"request": {
+						"url": "http://localhost:8080/distrity-web/rest/documentos/add/ordenventa",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huY3VlcnZvMjRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJqb2huY3VlcnZvMjRAZ21haWwuY29tIiwiZW1haWwiOiJqb2huY3VlcnZvMjRAZ21haWwuY29tIiwic2NvcGUiOiJWRU5UQVMifQ.-jp25pZZ8gFVzvvhPVLemdHIk_CHdULO-lONSN2cs70",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"detalles\":\n\t[{\"articulo\":{\"id\":2,\"codigo\":\"ABC001\",\"codigoBarra\":\"321565489544\",\"nombre\":\"Primer articulo\",\"descripcion\":\"Este es el primer articulo\",\"precioCompra\":100,\"precioVenta\":200,\"precioBase\":120,\"porcentajeDescuento\":5,\"observaciones\":\"Primero\",\"fechaAlta\":null,\"fechaBaja\":null,\"unidad\":{\"id\":4,\"codigo\":\"UN\",\"descripcion\":\"Unidad (C/U)\"}},\"cantidad\":20,\"descuento\":5,\"precio\":200},\n\t {\"articulo\":{\"id\":3,\"codigo\":\"ABC002\",\"codigoBarra\":\"1564648488484\",\"nombre\":\"Segundo articulo\",\"descripcion\":\"Segundo de la lista\",\"precioCompra\":10,\"precioVenta\":15,\"precioBase\":12,\"porcentajeDescuento\":5,\"observaciones\":\"Por metro\",\"fechaAlta\":null,\"fechaBaja\":null,\"unidad\":{\"id\":3,\"codigo\":\"MT\",\"descripcion\":\"Metro (Distancia)\"}},\"cantidad\":60,\"descuento\":5,\"precio\":15},\n\t {\"articulo\":{\"id\":4,\"codigo\":\"ABC003\",\"codigoBarra\":\"4568784621894\",\"nombre\":\"Este es el tercero de la lista\",\"descripcion\":\"porque es el tercero\",\"precioCompra\":80,\"precioVenta\":100,\"precioBase\":90,\"porcentajeDescuento\":0,\"observaciones\":\"POr litro\",\"fechaAlta\":null,\"fechaBaja\":null,\"unidad\":{\"id\":2,\"codigo\":\"LT\",\"descripcion\":\"Litro (Volumen)\"}},\"cantidad\":15,\"descuento\":0,\"precio\":100}\n\t ],\n\t \"cliente\":{\"id\":4,\"rut\":\"87877878979797979\",\"razonSocial\":\"Carlos Fleitas y asociados\",\"nombreComercial\":\"Super Costo\",\"rubro\":\"Supermercado\",\"telefono\":\"01458225\",\"web\":\"http://supercosto.com\",\"email\":\"info@supercosto.com\",\"alta\":null,\"baja\":null,\"direccion\":null,\"tipoEmpresa\":{\"id\":1,\"descripcion\":\"Sociedad Anonima\",\"sigla\":\"SA\"},\"calificacion\":null},\n\t \"moneda\":{\"id\":3,\"codigo\":\"AR\",\"descripcion\":\"Peso argentino\",\"sigla\":\"$\",\"flagUrl\":\"http://peso.argentino\",\"codigoDgi\":\"ARG\",\"orden\":3}}"
+						},
+						"description": "Save documento"
+					},
+					"response": []
+				},
+				{
+					"name": "Documento filter",
+					"request": {
+						"url": "http://localhost/distrity-web/rest/documentos/filter/ordenventa",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm9waWV0YXJpb0BkaXN0cml0eS5jb20iLCJ1c2VybmFtZSI6InByb3BpZXRhcmlvQGRpc3RyaXR5LmNvbSIsImVtYWlsIjoicHJvcGlldGFyaW9AZGlzdHJpdHkuY29tIiwic2NvcGUiOiJQUk9QSUVUQVJJTyJ9.W6pbxNHCsRNzKjzJj3Qmw1nf7itfDiEtocBFXvzDVLk",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cliente\":{},\"operador\":{},\"term\":\"\",\"to\":\"2018-11-15\",\"from\":\"2018-08-15\"}"
+						},
+						"description": "Busca documentos con filtro"
+					},
+					"response": []
+				},
+				{
+					"name": "Documento get only my Orders with filters",
+					"request": {
+						"url": "http://localhost/distrity-web/rest/documentos/search/my/ordenventa",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm9waWV0YXJpb0BkaXN0cml0eS5jb20iLCJ1c2VybmFtZSI6InByb3BpZXRhcmlvQGRpc3RyaXR5LmNvbSIsImVtYWlsIjoicHJvcGlldGFyaW9AZGlzdHJpdHkuY29tIiwic2NvcGUiOiJQUk9QSUVUQVJJTyJ9.W6pbxNHCsRNzKjzJj3Qmw1nf7itfDiEtocBFXvzDVLk",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"clienteId\":null,\"operadorId\":null,\"term\":\"\",\"from\":\"2018-05-15\",\"to\":\"2019-08-15\"}"
+						},
+						"description": "Busca documentos con filtro"
+					},
+					"response": []
+				},
+				{
+					"name": "Documento get all Orders with filters",
+					"request": {
+						"url": "http://localhost/distrity-web/rest/documentos/search/all/ordenventa",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm9waWV0YXJpb0BkaXN0cml0eS5jb20iLCJ1c2VybmFtZSI6InByb3BpZXRhcmlvQGRpc3RyaXR5LmNvbSIsImVtYWlsIjoicHJvcGlldGFyaW9AZGlzdHJpdHkuY29tIiwic2NvcGUiOiJQUk9QSUVUQVJJTyJ9.W6pbxNHCsRNzKjzJj3Qmw1nf7itfDiEtocBFXvzDVLk",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"clienteId\":null,\"operadorId\":null,\"term\":\"\",\"from\":\"2018-05-15\",\"to\":\"2019-08-15\"}"
+						},
+						"description": "Busca documentos con filtro"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Autenticar usuario",
+			"request": {
+				"url": "http://localhost/distrity-web/rest/authentication",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "X-TenantID",
+						"value": "public",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"propietario@distrity.com\",\n    \"password\": \"17950858528ec9f8fed7b7ea91a703ad2b7b23acc6d65c1b44ffc7b77e02a2b718f9da6f86b1afdbd1de05758cd64f12e88182c1adf63de5c47095b55c2b3e8e\"\n}"
+				},
+				"description": "Autenticación de usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "Test hello world",
+			"request": {
+				"url": "http://localhost/distrity-web/rest/test",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "X-TenantID",
+						"value": "master",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"USER\",\n    \"password\": \"17950858528ec9f8fed7b7ea91a703ad2b7b23acc6d65c1b44ffc7b77e02a2b718f9da6f86b1afdbd1de05758cd64f12e88182c1adf63de5c47095b55c2b3e8e\"\n}"
+				},
+				"description": "Test hello world"
+			},
+			"response": []
+		},
+		{
+			"name": "Usuarios get all",
+			"request": {
+				"url": "http://localhost/distrity-web/rest/usuarios",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer token",
+						"description": ""
+					},
+					{
+						"key": "X-TenantID",
+						"value": "slave",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Get all usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "Current usuario",
+			"request": {
+				"url": "http://localhost/distrity-web/rest/authentication/current",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "X-TenantID",
+						"value": "slave",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer token",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"USER\",\n    \"password\": \"pass\"\n}"
+				},
+				"description": "Current usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "Geoserver REST",
+			"request": {
+				"url": "http://localhost:8600/geoserver/rest",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46Z2Vvc2VydmVy",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Geoserver REST"
+			},
+			"response": []
+		},
+		{
+			"name": "Save Point on Geoserver ",
+			"request": {
+				"url": "http://localhost:8600/geoserver/distrity/ows",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<Transaction \n\txmlns=\"http://www.opengis.net/wfs\" \n\tservice=\"WFS\" \n\tversion=\"1.1.0\" \n\txmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \n\txsi:schemaLocation=\"http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd\">\n\t<Insert>\n\t\t<locations xmlns=\"distrity\">\n\t\t\t<geometry>\n\t\t\t\t<Point xmlns=\"http://www.opengis.net/gml\" srsName=\"EPSG:3857\">\n\t\t\t\t\t<pos srsDimension=\"2\">-6256065.6136566745 -4151170.1674170797</pos>\n\t\t\t\t</Point>\n\t\t\t</geometry>\n\t\t</locations>\n\t</Insert>\n</Transaction>"
+				},
+				"description": "Save EPSG:4326"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Point on Geoserver",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8600/geoserver/wfs?request=GetFeature&version=1.1.0&typeName=distrity:locations&outputFormat=GML2&FEATUREID=locations.3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8600",
+					"path": [
+						"geoserver",
+						"wfs"
+					],
+					"query": [
+						{
+							"key": "request",
+							"value": "GetFeature",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "version",
+							"value": "1.1.0",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "typeName",
+							"value": "distrity:locations",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "outputFormat",
+							"value": "GML2",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "FEATUREID",
+							"value": "locations.3",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Location point on Geoserver"
+			},
+			"response": []
+		}
+	]
+}

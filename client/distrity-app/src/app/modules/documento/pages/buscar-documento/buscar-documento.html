@@ -1,0 +1,121 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <!--<ion-searchbar (input)="getItems($event)"></ion-searchbar>-->
+    <ion-searchbar
+    [(ngModel)]="searchTerm"
+    [formControl]="searchControl"
+    (ionInput)="onSearchInput()"
+    placeholder="Buscar pedidos"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<!--
+<ion-header>
+  <ion-navbar color="primary" class="ionheader">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Pedidos</ion-title>
+  </ion-navbar>
+</ion-header>
+-->
+
+<ion-content>
+
+  <ion-fab left bottom>
+      <button ion-fab (click)="showFilter = !showFilter" color="{{showFilter ? 'danger' : 'light'}}">
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-fab>
+
+  <ion-fab right bottom>
+      <button ion-fab color="primary" (click)="goToCrearDocumento()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+  <!--
+  <ion-searchbar
+  [(ngModel)]="searchTerm"
+  [formControl]="searchControl"
+  (ionInput)="onSearchInput()"
+  placeholder="Buscar"
+  margin-top= 15></ion-searchbar>
+
+  <ion-card id="topCard" *ngIf="showFilter">
+
+    <ion-list>
+      <ion-item-divider (click)="showFilter = !showFilter" color="light">
+        Filtros
+        <ion-icon name="funnel" item-end></ion-icon>
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-label color="primary" floating>Cliente</ion-label>
+        <ion-select
+          [(ngModel)]="selectedCliente"
+          [ngModelOptions]="{standalone: true}"
+          (ngModelChange)="onChangeCliente($event)"
+          required>
+          <ion-option [value]="cliente" *ngFor="let cliente of clientes">{{ cliente.nombreComercial }} ({{ cliente.razonSocial }})</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>Desde</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="selectedFrom"
+        monthNames="{{monthNames}}"
+        monthShortNames="{{monthShortNames}}"
+        dayNames="{{dayNames}}"
+        dayShortNames="{{dayShortNames}}"
+        cancelText="{{cancelText}}"
+        doneText="{{doneText}}"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>Hasta</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MMMM YYYY" [(ngModel)]="selectedTo"
+        monthNames="{{monthNames}}"
+        monthShortNames="{{monthShortNames}}"
+        dayNames="{{dayNames}}"
+        dayShortNames="{{dayShortNames}}"
+        cancelText="{{cancelText}}"
+        doneText="{{doneText}}"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Filtro</ion-label>
+        <ion-input type="text" value="{{ stringFilter() }}"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <button ion-button block color="light" (click)="clearFilter()">
+      Limpiar &nbsp;
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+
+  </ion-card>
+-->
+
+  <div *ngIf="searching" class="spinner-container">
+   <ion-spinner></ion-spinner>
+  </div>
+
+
+  <ion-list>
+    <ion-item *ngFor="let documento of documentos" (tap)="verDocumento(documento)">
+      <h2>{{ documento.cliente?.razonSocial }}</h2>
+      <h3>{{ documento.cliente?.rut }} •
+          {{ documento.fecha | date:'short' }}
+      </h3>
+      <p>
+        <span class="articuloCodigo">{{ documento.numeroDocumento }}</span>
+        <span> • {{ documento.usuario?.username }}</span>
+      </p>
+      <div item-end>
+        <h2 class="precioVenta">$ 100000{{ documento.total }}</h2>
+      </div>
+    </ion-item>
+  </ion-list>
+
+
+</ion-content>

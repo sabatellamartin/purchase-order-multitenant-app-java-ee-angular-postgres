@@ -1,0 +1,43 @@
+
+#breadcrumbs-col {
+  padding-left: 20px;
+}
+
+.pagination li.active a {
+  background: #00ab99;
+}
+
+#pagination-control {
+  padding-top: 15px;
+}
+
+#btn-remove-item, #btn-edit-item {
+  margin-left: 5px;
+}
+
+.dropdown-trigger {
+  width: 240px;
+}
+
+.btn-estado {
+  width: 100%;
+}
+
+#input-estado {
+  width: 100%;
+}
+#btn-edit-cliente {
+  margin-top: 26px;
+  margin-left: 0px;
+}
+
+#input-total {
+    font-size: 20px;
+    color: green;
+}
+
+.btn-control {
+    margin-top: 10px;
+    margin-right:5px;
+    width: 100%;
+}

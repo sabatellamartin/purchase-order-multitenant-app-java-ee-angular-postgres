@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Cliente</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div (swipe)="swipeEvent($event)">
+
+    <ion-card *ngIf="selectedCliente">
+      <ion-item text-center>
+        <h1>{{ selectedCliente.nombreComercial }}</h1>
+        <h2>{{ selectedCliente.razonSocial }}</h2>
+        <h3>{{ selectedCliente.tipoEmpresa?.descripcion }} ({{ selectedCliente.tipoEmpresa?.sigla }})</h3>
+        <h3>{{ selectedCliente.rubro }}</h3>
+        <h3>{{ selectedCliente?.rut }}</h3>
+      </ion-item>
+    </ion-card>
+
+    <ion-card *ngIf="selectedCliente">
+      <ion-item text-left>
+        <h3>{{ selectedCliente.calificacion?.descripcion }}</h3>
+        <p>{{ selectedCliente.observacion }}</p>
+      </ion-item>
+    </ion-card>
+
+    <ion-card *ngIf="selectedCliente">
+      <ion-item *ngFor="let sucursal of selectedCliente?.sucursales">
+        <h2><ion-icon name="home"></ion-icon> {{ sucursal.nombre }} <span *ngIf="sucursal.casaCentral">CASA CENTRAL</span></h2>
+        <p>{{ sucursal.direccion?.ubicacion }}</p>
+        <div item-end>
+        </div>
+      </ion-item>
+    </ion-card>
+
+    <ion-list>
+      <ion-list-header>
+        Contacto
+      </ion-list-header>
+      <ion-item><ion-icon name="person"></ion-icon> {{ selectedCliente.referente }}</ion-item>
+      <ion-item><ion-icon name="time"></ion-icon> {{ selectedCliente.horario }}</ion-item>
+      <ion-item><ion-icon name="call"></ion-icon> {{ selectedCliente.telefono }}</ion-item>
+      <ion-item><ion-icon name="globe"></ion-icon> {{ selectedCliente.web }}</ion-item>
+      <ion-item><ion-icon name="mail"></ion-icon> {{ selectedCliente.email }}</ion-item>
+    </ion-list>
+
+  </div>
+</ion-content>
+
+
+<!--
+"cliente": {
+  "id": 1,
+  "rut": "215123456789",
+  "razonSocial": "The critical hause",
+  "nombreComercial": "Criticalhause",
+  "rubro": "Industria tecnológica",
+  "telefono": "098035962",
+  "web": "criticalhause.com",
+  "email": "criticalhouse@gmail.com",
+  "alta": 1554435605701,
+  "baja": null,
+  "referente": "Sergio Ramos",
+  "observacion": "Empresa con buena relacion",
+  "horario": "de 8 a 16hs",
+  "tipoEmpresa": {
+      "id": 1,
+      "descripcion": "SOCIEDAD ANONIMA",
+      "sigla": "SA"
+  },
+  "calificacion": {
+      "id": 4,
+      "codigo": "4",
+      "descripcion": "MUY BUENA"
+  },
+  "sucursales": [
+      {
+          "id": 1,
+          "nombre": "SUCURSAL nro A1",
+          "casaCentral": true,
+          "direccion": {
+              "id": 1,
+              "ubicacion": "1359,1361, Bulevar Artigas, Parque Rodó, Montevideo, 11601, Uruguay",
+              "featureId": null,
+              "longitud": null,
+              "latitud": null
+          }
+      },
+      {
+          "id": 2,
+          "nombre": "SUCURSAL nro A2",
+          "casaCentral": false,
+          "direccion": {
+              "id": 2,
+              "ubicacion": "2838,2838 BIS, General Gregorio Suárez, Punta Carretas, Montevideo, 11303, Uruguay",
+              "featureId": null,
+              "longitud": null,
+              "latitud": null
+          }
+      }
+  ]
+-->

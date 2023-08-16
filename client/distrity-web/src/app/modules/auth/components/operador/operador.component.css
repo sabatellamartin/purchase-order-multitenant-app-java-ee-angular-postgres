@@ -1,0 +1,15 @@
+#breadcrumbs-col {
+  padding-left: 20px;
+}
+
+.pagination li.active a {
+  background: #00ab99;
+}
+
+#pagination-control {
+  padding-top: 15px;
+}
+
+#btn-delete-forever, #btn-delete, #btn-lock, #btn-unlock, #btn-renew {
+  margin-left: 5px;
+}

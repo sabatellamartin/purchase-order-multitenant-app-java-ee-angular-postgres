@@ -1,0 +1,11 @@
+<header></header>
+<main>
+  <!-- LoadSesion -->
+  <div *ngIf="getSesion()"></div>
+  <!-- Login -->
+  <app-login *ngIf="!sesion"></app-login>
+  <!-- Layout -->
+  <layout-navbar *ngIf="sesion"></layout-navbar>
+  <router-outlet *ngIf="sesion"></router-outlet>
+</main>
+<layout-footer *ngIf="sesion"></layout-footer>

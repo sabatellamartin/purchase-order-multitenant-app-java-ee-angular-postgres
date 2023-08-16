@@ -1,0 +1,343 @@
+
+<!-- Navegacion y ubicacion -->
+<nav materialize>
+  <div class="nav-wrapper">
+    <div id="breadcrumbs-col" class="col s12">
+      <a routerLink="/" class="breadcrumb">Dashboard</a>
+      <a routerLink="/documento/documentos" class="breadcrumb">Pedidos</a>
+      <ul class="right hide-on-med-and-down" style="margin-top:15px">
+        <li>
+          <a routerLink="/" class="waves-effect waves-light btn right">
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="section"></div>
+
+<form materialize>
+  <div class="row">
+    <div class="col s12 m2">
+      <label for="input-estado">Estado</label>
+      <select id="input-estado"
+      class="validate"
+      materialize="material_select"
+      [materializeSelectOptions]="filterEstado"
+      [(ngModel)]="filterEstado"
+      [ngModelOptions]="{standalone: true}"
+      (ngModelChange)="searchByTerm()"
+      #pedidoEstado>
+        <option [ngValue]="null" >Todos/ACTIVOS</option>
+        <option *ngFor="let estado of estados"
+                [attr.selected]="estado === filterEstado"
+                [ngValue]="estado" >{{estado}}</option>
+      </select>
+    </div>
+    <div class="col s12 m3">
+      <label for="input-vigencia">Fecha de emisión - vencimiento</label>
+      <my-date-range-picker placeholder="Seleccione rango" name="documentoDateRange" [options]="myDateRangePickerOptions" [(ngModel)]="dateRange"></my-date-range-picker>
+    </div>
+    <div class="col s10 m5">
+      <label for="input-search">Buscar</label>
+      <input id="input-search"
+      type="text"
+      class="validate"
+      placeholder="Buscar por nombre vendedor, cliente o RUT"
+      [(ngModel)]="term"
+      [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="col s2 m1">
+      <button id="btn-search"
+              class="btn btn-floating waves-effect waves-light tooltipped"
+              materialize="tooltip"
+              data-position="bottom"
+              data-tooltip="Búsqueda por término"
+              type="submit"
+              name="action"
+              (click)="syncSearch()">
+        <i class="material-icons">search</i>
+      </button>
+    </div>
+    <!--<div class="input-field col s12 m2">
+      <a class="waves-effect waves-light btn right teal" (click)="viewToggle()" *ngIf="!viewAll"><i class="material-icons right">visibility</i>Ver todos</a>
+      <a class="waves-effect waves-light btn right teal" (click)="viewToggle()" *ngIf="viewAll" ><i class="material-icons right">visibility_off</i>Ver activos</a>
+    </div>-->
+  </div>
+</form>
+
+<div class="row">
+  <div class="col s12 m12">
+    <table class="responsive-table centered highlight">
+      <thead>
+        <tr>
+          <th>Número Documento</th>
+          <th>Fecha</th>
+          <th>Operador</th>
+          <th>Cliente</th>
+          <th>RUT</th>
+          <th>Moneda</th>
+          <th>Monto</th>
+          <th>Estado</th>
+          <th>
+            <i class="material-icons">more_horiz</i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let documento of documentos | paginate: { id: 'paginator', itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: totalItems }"
+            [class.active]="documento === selectedDocumento">
+          <td>{{documento.numeroDocumento}}</td>
+          <td>{{documento.fecha |  date:'short'}}</td>
+          <td>{{documento.usuario?.username}}</td>
+          <td>{{documento.cliente?.razonSocial}}</td>
+          <td>{{documento.cliente?.rut}}</td>
+          <td>{{documento.moneda?.descripcion}}</td>
+          <td class="green-text">{{documento.moneda?.sigla}} {{documento.total}}</td>
+          <td>
+            <button *ngIf="documento.estado=='CREADO'"
+               class="btn-estado btn-small btn waves-effect waves-light green tooltipped"
+               materialize="tooltip"
+               data-position="bottom"
+               data-tooltip="Cambiar estado"
+               [attr.data-tooltip]="getEstadoTooltip(documento)"
+               type="button"
+               (click)="changeEstadoAction(documento)">
+               {{ documento.estado }}
+            </button>
+            <button *ngIf="documento.estado=='ENTREGADO'"
+               class="btn-estado btn-small btn waves-effect waves-light grey tooltipped"
+               materialize="tooltip"
+               data-position="bottom"
+               data-tooltip="Cambiar estado"
+               [attr.data-tooltip]="getEstadoTooltip(documento)"
+               type="button"
+               (click)="changeEstadoAction(documento)">
+               {{ documento.estado }}
+            </button>
+            <button *ngIf="documento.estado=='CANCELADO'"
+               class="btn-estado btn-small btn waves-effect waves-light red tooltipped"
+               materialize="tooltip"
+               data-position="bottom"
+               data-tooltip="Cambiar estado"
+               [attr.data-tooltip]="getEstadoTooltip(documento)"
+               type="button"
+               (click)="cancelarAction(documento)">
+               {{ documento.estado }}
+            </button>
+            <button *ngIf="documento.estado!='CREADO' && documento.estado!='CANCELADO' && documento.estado!='ENTREGADO'"
+               class="btn-estado btn-small btn waves-effect waves-light blue tooltipped"
+               materialize="tooltip"
+               data-position="bottom"
+               data-tooltip="Cambiar estado"
+               [attr.data-tooltip]="getEstadoTooltip(documento)"
+               type="button"
+               (click)="changeEstadoAction(documento)">
+               {{ documento.estado }}
+            </button>
+          </td>
+          <td>
+            <!-- CONTROL PDF, EDITAR, CANCELAR, DETALLE
+            <button id="btn-detalle" class="btn-small btn-floating waves-effect waves-light teal tooltipped"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Detalles"
+               type="button"
+               (click)="detailAction(documento)">
+               <i class="material-icons">more_horiz</i>
+            </button>-->
+            <button id="btn-pdf" class="btn-small btn-floating waves-effect waves-light teal tooltipped"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Descargar pedido en PDF"
+               type="button"
+               (click)="pdf(documento)">
+               <i class="material-icons">picture_as_pdf</i>
+            </button>
+            <button id="btn-editar" class="btn-small btn-floating waves-effect waves-light blue tooltipped"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Editar pedido"
+               type="button"
+               (click)="editAction(documento)">
+               <i class="material-icons">edit</i>
+            </button>
+            <button id="btn-cancel" class="btn-small btn-floating waves-effect waves-light tooltipped red darken-2"
+               *ngIf="!isCancelado(documento)"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Cancelar documento"
+               type="button"
+               (click)="cancelarAction(documento)">
+               <i class="material-icons">cancel</i>
+            </button>
+            <button id="btn-cancel" class="btn-small btn-floating waves-effect waves-light tooltipped green darken-2"
+               *ngIf="isCancelado(documento)"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Retomar documento"
+               type="button"
+               (click)="cancelarAction(documento)">
+               <i class="material-icons">restore</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PAGINACION -->
+<pager-component
+  [currentPage]="currentPage"
+  [totalItems]="totalItems"
+  [itemsPerPage]="itemsPerPage"
+  (pageChange)='currentPageChanged($event)'
+  (itemsPerPageChange)='itemsPerPageChanged($event)'>
+</pager-component>
+
+
+<!-- CREAR PEDIDO Para Implementar 
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large tooltipped"
+     materialize="tooltip"
+     data-position="left"
+     data-tooltip="Crear pedido"
+     type="button"
+     (click)="newAction()">
+    <i class="large material-icons">add</i>
+  </a>
+</div>
+-->
+
+<!-- Modal Structure -->
+<div id="modalForm"
+     class="modal"
+     materialize="modal"
+     [materializeParams]="[{dismissible: false}]"
+     [materializeActions]="modalForm">
+  <div class="modal-content">
+    <h5>{{modalTitle}}</h5>
+    <div class="row" *ngIf="selectedDocumento">
+      <form class="col s12">
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="input-id"
+            type="number"
+            class="validate"
+            [(ngModel)]="selectedDocumento.id"
+            [ngModelOptions]="{standalone: true}"
+            #unidadId hidden>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12 m4">
+            <label for="input-numero">Número documento</label>
+            <input id="input-numero"
+            type="text"
+            class="validate"
+            placeholder="* Número documento"
+            [(ngModel)]="selectedDocumento.numeroDocumento"
+            [ngModelOptions]="{standalone: true}"
+            #documentoNumeroDocumento required>
+          </div>
+          <div class="col s12 m4">
+            <label for="input-fecha">Fecha emisión</label>
+            <input id="input-fecha"
+            type="date"
+            class="validate"
+            placeholder="* Fecha emisión"
+            [(ngModel)]="selectedDocumento.fecha"
+            [ngModelOptions]="{standalone: true}"
+            #documentoFecha required>
+          </div>
+          <div class="col s12 m4">
+            <label for="input-vencimiento">Fecha vencimiento</label>
+            <input id="input-vencimiento"
+            type="date"
+            class="validate"
+            placeholder="* Fecha vencimiento"
+            [(ngModel)]="selectedDocumento.vencimiento"
+            [ngModelOptions]="{standalone: true}"
+            #documentoVencimiento required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s8">
+            <label for="input-cliente">Cliente</label>
+            <input id="input-cliente"
+            type="text"
+            class="validate"
+            placeholder="* Cliente"
+            [(ngModel)]="selectedDocumento.cliente.razonSocial"
+            [ngModelOptions]="{standalone: true}"
+            #documentoClienteRazonSocial required>
+          </div>
+          <div class="col s4">
+            <label for="input-rut">RUT</label>
+            <input id="input-rut"
+            type="text"
+            class="validate"
+            placeholder="RUT"
+            [(ngModel)]="selectedDocumento.cliente.rut"
+            [ngModelOptions]="{standalone: true}"
+            #documentoClienteRut>
+          </div>
+        </div>
+
+        <!-- Roles -->
+         <div class="row">
+           <div class="col s12">
+             <table class="responsive-table centered highlight">
+               <thead>
+                 <tr>
+                   <th>Código</th>
+                   <th>Artículo</th>
+                   <th>Cantidad</th>
+                   <th>Descuento</th>
+                   <th>Precio</th>
+                   <th>...</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let detalle of selectedDocumento.detalles">
+                   <td>{{detalle.articulo?.codigo}}</td>
+                   <td>{{detalle.articulo?.nombre}}</td>
+                   <td>{{detalle.cantidad}}</td>
+                   <td>{{detalle.descuento}}</td>
+                   <td>{{detalle.precio}}</td>
+                   <!--
+                   <td>
+                     <button id="btn-delete-forever" class="btn-small btn-floating waves-effect waves-light amber darken-3 tooltipped"
+                        materialize="tooltip"
+                        data-position="top"
+                        data-tooltip="Revocar permiso"
+                        type="button"
+                        (click)="removeAction(rol); $event.stopPropagation()">
+                        <i class="material-icons">remove</i>
+                     </button>
+                   </td>
+                   -->
+                 </tr>
+               </tbody>
+             </table>
+
+           </div>
+         </div>
+
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Cancelar</a>
+
+    <a class="modal-action modal-close waves-effect waves-green btn-flat"
+    *ngIf="selectedDocumento"
+    (click)="pdf(selectedDocumento)">Descarga PDF</a>
+
+  </div>
+</div>

@@ -1,0 +1,70 @@
+
+<!-- Search -->
+
+<div class="row">
+  <div class="input-field col s10 m10">
+    <input id="input-search"
+    type="text"
+    class="validate"
+    placeholder="Buscar"
+    [(ngModel)]="term"
+    [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class="input-field col s2 m2">
+    <button class="btn btn-floating waves-effect waves-light tooltipped"
+            materialize="tooltip"
+            data-position="bottom"
+            data-tooltip="Búsqueda por término"
+            type="submit"
+            name="action"
+            (click)="searchByTerm()">
+      <i class="material-icons">search</i>
+    </button>
+  </div>
+</div>
+
+<!-- Tabla -->
+<div id="articulos" class="row">
+  <div class="col s12">
+    <table class="responsive-table highlight">
+      <tbody>
+        <tr *ngFor="let articulo of articulos | paginate: { id: 'articulosPaginator', itemsPerPage: 4, currentPage: p, totalItems: total }">
+          <td>{{articulo.codigo}}: <strong>{{articulo.nombre}}</strong><br>{{articulo.descripcion}}</td>
+          <td><strong class="money">$ {{articulo.precioBase}}</strong>/{{articulo.unidad?.codigo}}<br>{{articulo.impuesto.nombre}}</td>
+          <td>
+            <button class="btn-small btn-floating waves-effect waves-light teal tooltipped"
+               materialize="tooltip"
+               data-position="top"
+               data-tooltip="Agregar"
+               type="button"
+               (click)="selectAction(articulo)">
+               <i class="material-icons">add</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- Pagination -->
+
+<div id="paginador" class="row">
+  <div class="col s12 m12">
+    <pagination-controls
+      id="articulosPaginator"
+      class="center"
+      (pageChange)="pageChanged($event)"
+      maxSize="9"
+      directionLinks="true"
+      autoHide="true"
+      responsive="true"
+      previousLabel="Anterior"
+      nextLabel="Siguiente"
+      screenReaderPaginationLabel="Pagination"
+      screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+</div>

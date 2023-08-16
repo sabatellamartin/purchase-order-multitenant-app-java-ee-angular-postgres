@@ -1,0 +1,32 @@
+
+<!-- PAGINACION -->
+<div class="row center-align">
+  <div class="col s12 m12">
+    <pagination-controls id="paginator"
+      (pageChange)="pageChanged($event)"
+      maxSize="9"
+      directionLinks="true"
+      autoHide="true"
+      responsive="true"
+      previousLabel=""
+      nextLabel=""
+      screenReaderPaginationLabel="Pagination"
+      screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="col s12 m12">
+    <div class="container">
+      <p class="range-field">
+        <input type="range" id="test5" min="0" max="{{totalItems}}"
+        placeholder="Items por pagina"
+        [(ngModel)]="itemsPerPage"
+        [ngModelOptions]="{standalone: true}"
+        (ngModelChange)="itemsPerPageChanged($event)"
+        #paginatorItemsPerPage />
+      </p>
+    </div>
+    <label for="input-items-por-pagina">{{totalItems}} resultados mostrados de a {{itemsPerPage}}, actualizados {{ searchTime | date:'hh:mm:ss' }} hs</label>
+    <!--<label for="input-items-por-pagina">Resultados por página ({{itemsPerPage}})</label>-->
+  </div>
+</div>

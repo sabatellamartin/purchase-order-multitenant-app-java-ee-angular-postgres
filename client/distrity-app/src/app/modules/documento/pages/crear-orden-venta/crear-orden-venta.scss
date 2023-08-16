@@ -1,0 +1,35 @@
+page-crear-orden-venta {
+  #topButtons {
+    display: flex;
+    flex-direction: row;
+  }
+  #topButtons button {
+    flex:1;
+  }
+  #topList {
+    margin-bottom:50px;
+  }
+  .itemBorder {
+    border-left: 4px solid #e65100;
+    //border-left: 20px solid #e65100;
+    border-right: 0px solid #488aff;
+  }
+  .precioUnitario {
+    color: green;
+  }
+  .precioParcial {
+    color: green;
+    font-weight: bold;
+  }
+  .cantidadParcial {
+    font-weight: bold;
+  }
+  #precioTotal {
+    //color: green;
+    font-weight: bold;
+  }
+  .toolbar-title-sucursal {
+    font-size: 70%;
+  }
+
+}

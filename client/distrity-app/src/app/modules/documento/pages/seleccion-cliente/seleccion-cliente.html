@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Clientes</ion-title>
+  </ion-navbar>
+
+  <!--SEARCH-->
+  <ion-toolbar color="primary">
+    <ion-searchbar
+    [(ngModel)]="searchTerm"
+    [formControl]="searchControl"
+    (ionInput)="onSearchInput()"
+    placeholder="Buscar"></ion-searchbar>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content (swipe)="swipeEvent($event)">
+
+  <div *ngIf="searching" class="spinner-container">
+   <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list>
+    <ion-item *ngFor="let cliente of clientes" (tap)="selectCliente(cliente)">
+      <h2>{{ cliente.razonSocial }}</h2>
+      <h3>{{ cliente.rut }} • {{ cliente.nombreComercial }}</h3>
+      <div item-end>
+        <h2 class="precioVenta">{{ cliente.telefono }}</h2>
+      </div>
+      <button *ngIf="isSelected(cliente)" color="primary" ion-button item-end (click)="removeCliente(cliente)">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

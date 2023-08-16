@@ -1,0 +1,20 @@
+page-profile {
+  ion-title {
+    line-height: 40px;
+    padding-left: 30px;
+    background: url('../../../../../assets/imgs/logo.svg') no-repeat left center;
+  }
+  #profile-img {
+    height: 20vh;
+    width: auto;
+    margin: auto;
+    display: block;
+  }
+  #topButtons {
+    display: flex;
+    flex-direction: row;
+  }
+  #topButtons button {
+    flex:1;
+  }
+}

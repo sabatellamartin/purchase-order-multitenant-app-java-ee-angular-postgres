@@ -1,0 +1,19 @@
+.card-border-blue {
+  border-bottom: #0277bd solid 4px; /* light-blue darken-3 */
+}
+
+.card-border-orange {
+  border-bottom: #ef6c00 solid 4px; /* orange darken-3 */
+}
+
+.card-border-grey {
+  border-bottom: #424242 solid 4px; /* grey darken-3 */
+}
+
+.card-border-green {
+  border-bottom: #2e7d32  solid 4px; /* green darken-3 */
+}
+
+.card-border-black {
+  border-bottom: #000000  solid 4px; /* green darken-3 */
+}

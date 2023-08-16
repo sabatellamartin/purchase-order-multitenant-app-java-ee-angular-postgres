@@ -1,0 +1,12 @@
+[{
+    "codigo": "EXAMPLE01",
+    "codigoBarra": "78985465132115",
+    "nombre": "Nombre",
+    "descripcion": "Descripcion",
+    "precioCompra": 50,
+    "precioVenta": 100,
+    "precioBase": 70,
+    "porcentajeDescuento": 20,
+    "observaciones": "Observaciones",
+    "fechaBaja": null
+}]

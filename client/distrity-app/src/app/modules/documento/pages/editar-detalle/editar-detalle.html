@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Item</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content (swipe)="swipeEvent($event)">
+
+  <ion-fab left bottom>
+    <button ion-fab color="light" (click)="decrement()">
+      <ion-icon name="remove"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-fab right bottom>
+    <button ion-fab color="light" (click)="increment()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-fab center bottom>
+    <button ion-fab color="primary" (click)="updateDetalle()">
+      <ion-icon name="checkmark"></ion-icon>
+    </button>
+  </ion-fab>
+
+
+  <ion-card>
+    <ion-item>
+      <h3>{{ selectedDetalle.articulo.codigo }} • {{ selectedDetalle.articulo.categoria?.nombre }}</h3>
+      <h2>{{ selectedDetalle.articulo.nombre }}</h2>
+      <h2>{{ selectedDetalle.articulo.descripcion }}</h2>
+      <h2>
+        <span class="precioUnitario">{{ selectedMoneda?.sigla }} {{ selectedDetalle.precio }}</span>
+        <span>/{{ selectedDetalle.articulo.unidad.codigo }}</span>
+        <!--<span> • {{ selectedDetalle.descuento }}% dto</span>
+        <span> • {{ selectedDetalle.articulo.impuesto?.porcentaje }}% {{ selectedDetalle.articulo.impuesto?.nombre }}</span>-->
+      </h2>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content text-center (tap)="showParcialFull()">
+      <h2>
+        <span>{{ selectedDetalle.descuento }}% dto. aplicado</span>
+        <span class="precioUnitario">{{ selectedMoneda?.sigla }} {{ precioUnitario(selectedDetalle) }}</span>
+      </h2>
+      <h2>
+        <span>{{ selectedDetalle.articulo.impuesto?.porcentaje }}% {{ selectedDetalle.articulo.impuesto?.nombre }} incluido</span>
+        <span class="precioUnitario">{{ selectedMoneda?.sigla }} {{ precioImpuesto(selectedDetalle) }}</span>
+      </h2>
+      <h2>
+        <strong>{{ selectedDetalle.cantidad }} {{ selectedDetalle.articulo.unidad.codigo }}</strong>
+        <span> • </span>
+        <span class="precioTotal">{{ selectedMoneda?.sigla }} {{ precioParcial(selectedDetalle) }}</span>
+        <span> Imp. Inc. </span>
+      </h2>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label stacked>Descuento</ion-label>
+      <ion-range min="0" max="{{selectedDetalle.articulo.porcentajeDescuento}}"
+        [(ngModel)]="selectedDetalle.descuento" color="secondary">
+        <ion-label range-left>0 %</ion-label>
+        <ion-label range-right>{{ selectedDetalle.articulo.porcentajeDescuento }} %</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-item (pan)="modifyCantidad($event)">
+      <ion-label stacked>Cantidad</ion-label>
+      <ion-input [(ngModel)]="selectedDetalle.cantidad" type="number" min="1" max="999999"></ion-input>
+    </ion-item>
+    <!--
+    <div id="topButtons">
+      <button ion-button outline (click)="decrement()">
+        <ion-icon name="remove"></ion-icon>
+      </button>
+      <button ion-button outline (click)="increment()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </div>-->
+
+  </ion-list>
+
+
+</ion-content>

@@ -1,0 +1,25 @@
+
+#breadcrumbs-col {
+  padding-left: 20px;
+}
+
+.btn {
+  margin-left: 5px;
+}
+
+#btn-load-sucursal, #btn-remove-sucursal {
+  margin-left: 5px;
+}
+
+#table-controls {
+  min-width: 150px;
+}
+
+.map {
+  height: 300px;
+  width: 90%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}

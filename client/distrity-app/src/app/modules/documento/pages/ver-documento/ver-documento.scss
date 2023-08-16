@@ -1,0 +1,56 @@
+page-ver-documento {
+
+  #topList {
+    margin-bottom:70px;
+  }
+
+  .precioUnitario {
+    color: green;
+  }
+  .precioParcial {
+    color: green;
+    font-weight: bold;
+  }
+  .cantidadParcial {
+    font-weight: bold;
+  }
+  #precioTotal {
+    //color: green;
+    font-weight: bold;
+  }
+
+
+.col{/*
+background: gray;
+border: think solid black;
+*/
+}
+/*
+.ion-text-center{
+  text-align: center;
+}
+*/
+.subtitulos{
+  text-align: center;
+  background-color: #e8eaf6;
+  border-right: #c5cae9;
+}
+
+.colums{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #c5cae9;
+}
+.colums2{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rows{
+  //border: 1px solid #c5cae9;
+//  border-top: 1px solid #c5cae9;
+  border-bottom: 1px solid #c5cae9;
+
+}
+}

@@ -1,0 +1,121 @@
+<!-- LoadSesion -->
+<div *ngIf="sesion"></div>
+
+<!-- Dropdown Structure Navbar -->
+<ul id='dropdown-navbar' class='dropdown-content'>
+  <!--<li><a disabled>{{sesion.username}} ({{sesion.rol}})</a></li>-->
+  <li class="divider"></li>
+  <!-- Dropdown Menu Items -->
+  <li *ngFor="let menuItem of dropMenuItems" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <a routerLink="{{ menuItem.route }}">
+      <i *ngIf="menuItem.icon" class="material-icons left">{{ menuItem.icon | lowercase }}</i>
+      {{ menuItem.name }}
+    </a>
+  </li>
+  <!-- Item Exit -->
+  <li class="divider"></li>
+  <li>
+    <a (click)="logout()">
+      <i class="material-icons left">exit_to_app</i>
+      Cerrar sesión
+    </a>
+  </li>
+</ul>
+
+<!-- Dropdown Structure Sidenav -->
+<ul id='dropdown-sidenav' class='dropdown-content'>
+  <!--<li><a disabled>{{sesion.username}}</a></li> -->
+  <li class="divider"></li>
+  <!-- Dropdown Menu Items -->
+  <li *ngFor="let menuItem of dropMenuItems" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="hideSidenav()">
+    <a routerLink="{{ menuItem.route }}">
+      <i *ngIf="menuItem.icon" class="material-icons">{{ menuItem.icon | lowercase }}</i>
+      {{ menuItem.name }}
+    </a>
+  </li>
+  <!-- Item Exit -->
+  <li class="divider"></li>
+  <li>
+    <a (click)="logout()">
+      <i class="material-icons left">exit_to_app</i>
+      Cerrar sesión
+    </a>
+  </li>
+</ul>
+
+<!-- Sidenav Menu -->
+<ul id="slide-out" class="side-nav">
+  <li>
+    <div class="user-view">
+      <div class="background">
+        <img src="{{imgBanner}}" width="350" height="180">
+      </div>
+      <a><img class="circle" src="{{imgUser}}"></a>
+      <a><span class="white-text name">{{sesion.username}}</span></a>
+      <a><span class="white-text email">{{ sesion.email }}</span></a>
+    </div>
+  </li>
+  <!-- Dropdown Trigger -->
+  <li *ngIf="sesion">
+    <a materialize="dropdown" class="dropdown-trigger" data-activates='dropdown-sidenav'>
+      {{sesion.rol}}
+      <i class="material-icons left">account_circle</i>
+    </a>
+  </li>
+  <li><div class="divider"></div></li>
+  <!-- Menu Items -->
+  <li *ngFor="let menuItem of menuItems" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="hideSidenav()">
+    <a routerLink="{{ menuItem.route }}">
+      <i *ngIf="menuItem.icon" class="material-icons left">{{ menuItem.icon | lowercase }}</i>
+      {{ menuItem.name }}
+    </a>
+  </li>
+</ul>
+
+<!-- Navbar -->
+<div class="navbar-fixed">
+  <nav materialize>
+    <div class="nav-wrapper">
+      <!-- Brand -->
+      <a routerLink="{{ brand.route }}" class="brand-logo">
+        <img id="brand-image" alt="{{ brand.name }}" src="{{ brand.image }}">
+      </a>
+      <!-- Sidenav Movile Menu -->
+      <a materialize="sideNav"
+        [materializeParams]="sidenavParams"
+        [materializeActions]="sidenavActions"
+        data-activates="slide-out"
+        routerLink=""
+        class="button-collapse hide-on-large-only"><!-- class="button-collapse " -->
+        <i class="material-icons">menu</i></a>
+      <!-- Menu -->
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <!-- Menu Items -->
+        <li *ngFor="let menuItem of navbarItems" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a routerLink="{{ menuItem.route }}">
+            <i *ngIf="menuItem.icon" class="material-icons left">{{ menuItem.icon | lowercase }}</i>
+            {{ menuItem.name }}
+          </a>
+        </li>
+        <!-- Dropdown Trigger -->
+        <li *ngIf="sesion">
+          <a materialize="dropdown" class="dropdown-trigger" data-activates='dropdown-navbar'>
+            {{ sesion.email }}
+            <i class="material-icons right">arrow_drop_down</i>
+            <i class="material-icons left">account_circle</i>
+          </a>
+        </li>
+        <!-- Button -->
+        <li>
+          <a (click)="showSidenav()" class="waves-effect waves-light btn">
+            <i class="material-icons">menu</i>
+          </a>
+        </li>
+      </ul>
+      <!-- Floating Button
+      <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
+        <i class="material-icons">add</i>
+      </a> -->
+    </div>
+  </nav>
+</div>

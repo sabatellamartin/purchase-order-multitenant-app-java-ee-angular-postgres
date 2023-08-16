@@ -1,0 +1,28 @@
+<ion-content padding text-center class="vertical-align-content">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <img id="app-logo" src="{{logo}}"/>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+
+        <ion-list>
+          <ion-item>
+            <ion-label floating>Correo electrónico</ion-label>
+            <ion-input type="text" #username></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Contraseña</ion-label>
+            <ion-input type="password" #password></ion-input>
+          </ion-item>
+          <div padding id="topButtons">
+            <button ion-button (click)="signIn()">Ingresar</button>
+          </div>
+        </ion-list>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

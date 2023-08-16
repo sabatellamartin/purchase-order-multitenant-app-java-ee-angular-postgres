@@ -1,0 +1,33 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title class="header-navbar-title" text-center>Perfil</ion-title>
+    <button end ion-button menuToggle>
+      <ion-icon name="settings"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-avatar>
+    <img id="profile-img" [src]="picture">
+  </ion-avatar>
+  <ion-item-group>
+    <ion-item>
+      <p>Usuario: {{sesion.username}}</p>
+    </ion-item>
+    <ion-item>
+      <p>Email: {{sesion.email}}</p>
+    </ion-item>
+    <ion-item>
+      <p>Rol: {{sesion.rol}}</p>
+    </ion-item>
+  </ion-item-group>
+
+  <div padding id="topButtons">
+    <button ion-button (click)="goToChangePassword()">Cambiar contraseña</button>
+  </div>
+
+</ion-content>

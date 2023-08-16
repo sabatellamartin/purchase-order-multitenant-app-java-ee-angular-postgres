@@ -1,0 +1,425 @@
+
+<!-- Navegacion y ubicacion -->
+<nav materialize>
+  <div class="nav-wrapper">
+    <div id="breadcrumbs-col" class="col s12">
+      <a routerLink="/" class="breadcrumb">Dashboard</a>
+      <a routerLink="/documento/documentos" class="breadcrumb">Pedidos</a>
+      <a class="breadcrumb">{{title}}</a>
+      <ul class="right hide-on-med-and-down" style="margin-top:15px">
+        <li>
+          <a routerLink="/documento/documentos" class="waves-effect waves-light btn right">
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="section"></div>
+
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large teal tooltipped"
+     materialize="tooltip"
+     data-position="left"
+     data-tooltip="Agregar producto"
+     type="button"
+     (click)="openModalSeleccionArticulos()">
+    <i class="large material-icons">playlist_add</i>
+  </a>
+</div>
+
+<!--
+<div class="fixed-action-btn center">
+  <a class="btn-floating btn-large teal tooltipped"
+    materialize="tooltip"
+    data-position="left"
+    data-tooltip="Acciones">
+    <i class="large material-icons">more_vert</i>
+  </a>
+  <ul>
+    <li>
+      <a class="btn-floating grey tooltipped"
+         materialize="tooltip"
+         data-position="left"
+         data-tooltip="Cancelar y volver"
+         routerLink="/documento/dashboard">
+         <i class="material-icons">clear</i>
+      </a>
+    </li>
+    <li>
+      <a class="btn-floating blue tooltipped"
+         materialize="tooltip"
+         data-position="left"
+         data-tooltip="Guardar o modificar pedido"
+         (click)="saveOrdenVenta()">
+         <i class="material-icons">save</i>
+      </a>
+    </li>
+    <li *ngIf="selectedDocumento">
+      <a class="btn-floating red tooltipped"
+         materialize="tooltip"
+         data-position="left"
+         data-tooltip="Descargar pedido en PDF"
+         (click)="pdf(selectedDocumento)">
+         <i class="material-icons">picture_as_pdf</i>
+      </a>
+    </li>
+    <li>
+      <a class="btn-floating teal tooltipped"
+         materialize="tooltip"
+         data-position="left"
+         data-tooltip="Agregar producto"
+         (click)="addProductoAction()">
+         <i class="material-icons">playlist_add</i>
+      </a>
+    </li>
+  </ul>
+</div>
+-->
+
+<div class="row" *ngIf="selectedDocumento">
+  <div class="col s12 m12">
+    <div class="card-panel">
+      <div class="row">
+        <input id="input-id"
+        type="number"
+        class="validate"
+        [(ngModel)]="selectedDocumento.id"
+        [ngModelOptions]="{standalone: true}"
+        #documentoId hidden>
+        <div class="col s12 m2">
+          <label for="input-numero">Número documento</label>
+          <input id="input-numero"
+          type="text"
+          class="validate"
+          placeholder="* Número documento"
+          [(ngModel)]="selectedDocumento.numeroDocumento"
+          [ngModelOptions]="{standalone: true}"
+          #documentoNumeroDocumento disabled>
+        </div>
+        <div class="col s12 m2">
+          <label for="input-usuario-username">Usuario</label>
+          <input id="input-usuario-username"
+          type="text"
+          class="validate"
+          placeholder="Usuario"
+          [(ngModel)]="selectedDocumento.usuario.username"
+          [ngModelOptions]="{standalone: true}"
+          #documentoUsuarioUsername disabled>
+        </div>
+        <div class="col s12 m2">
+          <label for="input-fecha">Fecha emisión</label>
+          <my-date-picker
+            name="documento-emision"
+            [options]="emisionOptions"
+            [(ngModel)]="emision"
+            placeholder="Fecha emisión"
+            #documentoEmision required disabled>
+          </my-date-picker>
+        </div>
+        <div class="col s12 m2">
+          <label for="input-fecha">Fecha vencimiento</label>
+          <my-date-picker
+            name="documento-vencimiento"
+            [options]="vencimientoOptions"
+            [(ngModel)]="vencimiento"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Fecha vencimiento"
+            (dateChanged)="onVencimientoChanged($event)"
+            #documentoVencimiento required>
+          </my-date-picker>
+        </div>
+        <div class="col s12 m2">
+          <label for="input-moneda">Moneda</label>
+          <input id="input-moneda"
+          type="text"
+          class="validate"
+          placeholder="Moneda"
+          [(ngModel)]="selectedDocumento.moneda.descripcion"
+          [ngModelOptions]="{standalone: true}"
+          #documentoMoneda disabled>
+        </div>
+        <div class="col s12 m2">
+          <label for="input-estado">Click para {{estadoTooltip}}</label>
+          <a *ngIf="selectedDocumento.estado=='CREADO'"
+             class="btn-estado waves-effect waves-light btn green tooltipped centered"
+             materialize="tooltip"
+             data-position="bottom"
+             data-tooltip="Orden de venta activa"
+             (click)="changeEstadoAction(selectedDocumento)">
+             {{ selectedDocumento.estado }}
+          </a>
+          <a *ngIf="selectedDocumento.estado=='ENTREGADO'"
+             class="btn-estado waves-effect waves-light btn grey tooltipped centered"
+             materialize="tooltip"
+             data-position="bottom"
+             data-tooltip="Orden de venta finalizada"
+             (click)="changeEstadoAction(selectedDocumento)">
+             {{ selectedDocumento.estado }}
+          </a>
+          <a *ngIf="selectedDocumento.estado=='CANCELADO'"
+             class="btn-estado waves-effect waves-light btn red tooltipped centered"
+             materialize="tooltip"
+             data-position="bottom"
+             data-tooltip="Orden de venta cancelada"
+             (click)="cancelarAction(selectedDocumento)">
+             {{ selectedDocumento.estado }}
+          </a>
+          <a *ngIf="selectedDocumento.estado!='CREADO' && selectedDocumento.estado!='CANCELADO' && selectedDocumento.estado!='ENTREGADO'"
+             class="btn-estado waves-effect waves-light btn blue tooltipped centered"
+             materialize="tooltip"
+             data-position="bottom"
+             data-tooltip="Orden de venta activa"
+             (click)="changeEstadoAction(selectedDocumento)">
+             {{ selectedDocumento.estado }}
+          </a>
+        </div>
+        <div class="col s12 m3">
+          <label for="input-cliente-rut">RUT</label>
+          <input id="input-cliente-rut"
+          type="text"
+          class="validate"
+          placeholder="RUT"
+          [(ngModel)]="selectedDocumento.cliente.rut"
+          [ngModelOptions]="{standalone: true}"
+          #documentoClienteRut disabled>
+        </div>
+        <div class="col s12 m3">
+          <label for="input-cliente-razon">Razón social</label>
+          <input id="input-cliente-razon"
+          type="text"
+          class="validate"
+          placeholder="* Cliente"
+          [(ngModel)]="selectedDocumento.cliente.razonSocial"
+          [ngModelOptions]="{standalone: true}"
+          #documentoClienteRazonSocial disabled>
+        </div>
+        <div class="col s12 m3">
+          <label for="input-cliente-nombre">Nombre comercial</label>
+          <input id="input-cliente-nombre"
+          type="text"
+          class="validate"
+          placeholder="* Cliente"
+          [(ngModel)]="selectedDocumento.cliente.nombreComercial"
+          [ngModelOptions]="{standalone: true}"
+          #documentoClienteNombreComercial disabled>
+        </div>
+        <div class="col s12 m3">
+          <label for="input-cliente-email">Correo electrónico</label>
+          <input id="input-cliente-email"
+          type="text"
+          class="validate"
+          placeholder="Correo electrónico"
+          [(ngModel)]="selectedDocumento.cliente.email"
+          [ngModelOptions]="{standalone: true}"
+          #documentoClienteEmail disabled>
+        </div>
+        <div class="col s12 m3">
+          <label for="input-sucursal-nombre">Sucursal</label>
+          <select id="input-sucursal-nombre"
+          materialize="material_select"
+          [materializeSelectOptions]="selectedDocumento.sucursal"
+          [(ngModel)]="selectedDocumento.sucursal"
+          [ngModelOptions]="{standalone: true}"
+          [compareWith]="compareFn"
+          #documentoSucursal required>
+          <option *ngFor="let sucursal of selectedDocumento.cliente.sucursales"
+          [ngValue]="sucursal" >{{sucursal.nombre}}</option>
+          </select>
+        </div>
+        <div class="col s12 m9" *ngIf="selectedDocumento.sucursal">
+          <label for="input-direccion">Dirección</label>
+          <input id="input-direccion"
+          type="text"
+          class="validate"
+          placeholder="Dirección"
+          [(ngModel)]="selectedDocumento.sucursal.direccion.ubicacion"
+          [ngModelOptions]="{standalone: true}"
+          #documentoSucursalDireccion disabled>
+        </div>
+      </div><!-- Row -->
+    </div><!-- CardPanel -->
+  </div><!-- Col -->
+
+  <div class="col s12 m12">
+    <div class="card-panel">
+      <table class="responsive-table centered highlight">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Producto</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Desc.(%)</th>
+            <th>Impuesto</th>
+            <th>Unitario</th>
+            <th>Parcial</th>
+            <th>...</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detalle of selectedDocumento.detalles | paginate: { id: 'detallePaginator', itemsPerPage: 7, currentPage: page, totalItems: totalItems }">
+            <td>{{detalle.articulo?.codigo}}</td>
+            <td>{{detalle.articulo?.nombre}}</td>
+            <td>{{detalle.articulo?.descripcion}}</td>
+            <td>{{detalle.cantidad}}</td>
+            <td>{{selectedDocumento.moneda.sigla}} {{detalle.precio}}/{{detalle.articulo?.unidad.codigo}}</td>
+            <td>{{detalle.descuento}}</td>
+            <td>{{detalle.articulo?.impuesto.nombre}} {{detalle.articulo?.impuesto.porcentaje}}%</td>
+            <td>{{selectedDocumento.moneda.sigla}} {{ precioImpuesto(detalle) }}</td>
+            <td>{{selectedDocumento.moneda.sigla}} {{ precioParcial(detalle) }}</td>
+            <td>
+              <button id="btn-edit-item"
+                      class="btn-small btn-floating waves-effect waves-light blue tooltipped"
+                      materialize="tooltip"
+                      data-position="top"
+                      data-tooltip="Editar item"
+                      type="button"
+                      (click)="editDetalleAction(detalle)">
+                 <i class="material-icons">edit</i>
+              </button>
+              <button id="btn-remove-item"
+                      class="btn-small btn-floating waves-effect waves-light amber darken-3 tooltipped"
+                      materialize="tooltip"
+                      data-position="top"
+                      data-tooltip="Quitar item"
+                      type="button"
+                      (click)="removeDetalleAction(detalle); $event.stopPropagation()">
+                <i class="material-icons">remove</i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div><!-- CardPanel -->
+  </div><!-- Col -->
+
+  <div class="col s12 m12">
+    <pagination-controls id="detallePaginator"
+      class="center"
+      (pageChange)="pageChanged($event)"
+      maxSize="9"
+      directionLinks="true"
+      autoHide="true"
+      responsive="true"
+      previousLabel="Anterior"
+      nextLabel="Siguiente"
+      screenReaderPaginationLabel="Pagination"
+      screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div><!-- Col -->
+
+  <div class="col s12 m12">
+    <div class="card-panel">
+      <div class="row">
+        <div class="col s12 m5">
+          <label for="input-observaciones">Observaciones</label>
+          <textarea id="input-observaciones"
+          class="materialize-textarea"
+          type="text"
+          placeholder="Aclaraciones o observaciones sobre el pedido"
+          [(ngModel)]="selectedDocumento.observaciones"
+          [ngModelOptions]="{standalone: true}"
+          #documentoObservaciones></textarea>
+        </div>
+        <div class="col s12 m7">
+          <div class="row">
+            <div class="col s12 m4">
+              <label for="input-total-descuento">Total descuentos ({{selectedDocumento.moneda.sigla}})</label>
+              <input id="input-total-descuento"
+              type="text"
+              class="validate"
+              placeholder="Total descuentos"
+              [(ngModel)]="totalDescuento"
+              [ngModelOptions]="{standalone: true}"
+              #documentoTotalDescuento disabled>
+            </div>
+            <div class="col s12 m4">
+              <label for="input-total-impuesto">Total impuestos ({{selectedDocumento.moneda.sigla}})</label>
+              <input id="input-total-impuesto"
+              type="text"
+              class="validate"
+              placeholder="Total impuestos"
+              [(ngModel)]="totalImpuesto"
+              [ngModelOptions]="{standalone: true}"
+              #documentoTotalImpuesto disabled>
+            </div>
+            <div class="col s12 m4">
+              <label for="input-total">Total impuestos incluidos ({{selectedDocumento.moneda.sigla}})</label>
+              <input id="input-total"
+              type="text"
+              class="validate"
+              placeholder="Total"
+              [(ngModel)]="total"
+              [ngModelOptions]="{standalone: true}"
+              #documentoTotal disabled>
+            </div>
+            <div class="col s12 m4">
+              <a class="btn-control waves-effect waves-light btn teal tooltipped"
+                 *ngIf="selectedDocumento"
+                 materialize="tooltip"
+                 data-position="bottom"
+                 data-tooltip="Descargar pedido en PDF"
+                 (click)="pdf(selectedDocumento)">
+                 <i class="material-icons right">picture_as_pdf</i>Descargar
+              </a>
+            </div>
+            <div class="col s12 m4">
+              <a class="btn-control waves-effect waves-light btn grey lighten-4 black-text tooltipped"
+                 materialize="tooltip"
+                 data-position="bottom"
+                 data-tooltip="Cancelar y volver"
+                 routerLink="/documento/dashboard">
+                 <i class="material-icons right">clear</i>Cancelar
+              </a>
+            </div>
+            <div class="col s12 m4">
+              <a class="btn-control waves-effect waves-light btn blue tooltipped"
+                 materialize="tooltip"
+                 data-position="bottom"
+                 data-tooltip="Guardar o modificar pedido"
+                 (click)="saveOrdenVenta()">
+                 <i class="material-icons right">save</i>Guardar
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- CardPanel -->
+  </div><!-- Col -->
+
+</div><!-- Row -->
+
+
+
+<!-- Modal Seleccion de Articulos -->
+<div id="modalSeleccionArticulos"
+     class="modal modal-fixed-footer"
+     materialize="modal"
+     [materializeParams]="[{dismissible: true}]"
+     [materializeActions]="modalSeleccionArticulos">
+  <div class="modal-content">
+    <seleccion-articulo (seleccion)="selectedArticuloEvent($event)"></seleccion-articulo>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModalSeleccionArticulos()">Cancelar</a>
+  </div>
+</div>
+
+<!-- Modal Editar Detalle -->
+<div id="modalEditDetalle"
+     class="modal modal-fixed-footer"
+     materialize="modal"
+     [materializeParams]="[{dismissible: true}]"
+     [materializeActions]="modalEditDetalle">
+  <div class="modal-content">
+    <edit-detalle [moneda]="selectedDocumento?.moneda" [detalle]="selectedDetalle"></edit-detalle>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModalEditDetalle()">Aceptar</a>
+  </div>
+</div>

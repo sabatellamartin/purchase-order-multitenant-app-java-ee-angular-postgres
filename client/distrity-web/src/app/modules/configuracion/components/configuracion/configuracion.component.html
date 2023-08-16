@@ -1,0 +1,48 @@
+
+<!-- Navegacion y ubicacion -->
+<nav materialize>
+  <div class="nav-wrapper">
+    <div id="breadcrumbs-col" class="col s12">
+      <a routerLink="/" class="breadcrumb">Dashboard</a>
+      <a routerLink="/configuracion/dashboard" class="breadcrumb">Configuración</a>
+      <ul class="right hide-on-med-and-down" style="margin-top:15px">
+        <li>
+          <a routerLink="/" class="waves-effect waves-light btn right">
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="section"></div>
+<!--
+<div class="container">
+  <h4 class="center-align">Configuración</h4>
+  <div class="collection">
+    <a class="collection-item" *ngFor="let item of items" routerLink="{{ item.route }}">
+      <span class="card-title">
+        <h5 class="black-text"><i *ngIf="item.icon" class="material-icons left">{{ item.icon | lowercase }}</i>{{ item.name }}</h5> {{ item.description }}
+      </span>
+    </a>
+  </div>
+  <div class="section"></div>
+  <div class="section"></div>
+</div>-->
+
+<div class="row">
+  <div *ngFor="let cardItem of items" class="col s12 m6">
+    <div [ngClass]="cardItem.class" *ngIf="cardItem.access">
+      <div class="card-content">
+        <a routerLink="{{ cardItem.route }}" class="black-text">
+        <span class="card-title">
+          <i *ngIf="cardItem.icon" class="material-icons left">{{ cardItem.icon | lowercase }}</i>
+          {{ cardItem.name }}
+        </span>
+        <p>{{ cardItem.description }}</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

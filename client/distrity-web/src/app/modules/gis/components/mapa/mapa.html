@@ -1,0 +1,29 @@
+
+
+<!-- Mapa -->
+<div id="map" class="map"></div>
+
+
+<!-- Coordenadas -->
+<div id="location"></div>
+
+
+<!-- Feature Types -->
+<div class="input-field col s12 m2">
+  <select materialize="material_select" [materializeSelectOptions]="currentType"
+          [(ngModel)]="currentType"
+          [ngModelOptions]="{standalone: true}"
+          (ngModelChange)="setType($event)"
+          #type >
+    <option value="Point">Point</option>
+    <option value="LineString">LineString</option>
+    <option value="Polygon">Polygon</option>
+    <option value="Circle">Circle</option>
+  </select>
+  <label>Geometry</label>
+</div>
+
+<button class="waves-effect waves-light btn" (click)="save()">
+  <i class="material-icons right">cloud</i>
+  Save on geoserver
+</button>

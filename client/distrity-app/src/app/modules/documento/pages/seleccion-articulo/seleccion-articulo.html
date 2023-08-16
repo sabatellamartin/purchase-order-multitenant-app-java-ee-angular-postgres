@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Artículos</ion-title>
+  </ion-navbar>
+
+  <!--SEARCH-->
+  <ion-toolbar color="primary">
+    <ion-searchbar
+    [(ngModel)]="searchTerm"
+    [formControl]="searchControl"
+    (ionInput)="onSearchInput()"
+    placeholder="Buscar"></ion-searchbar>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content (swipe)="swipeEvent($event)">
+
+  <div *ngIf="searching" class="spinner-container">
+   <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list>
+    <ion-item *ngFor="let articulo of articulos" (tap)="selectArticulo(articulo)">
+      <h2>{{ articulo.nombre }}</h2>
+      <h3>{{ articulo.descripcion }}</h3>
+      <p>
+        <span class="articuloCodigo">{{ articulo.codigo }}</span>
+        <span class="articuloPrecio"> • ${{ articulo.precioVenta }}</span>
+        <span> x {{ articulo.unidad.codigo }}</span>
+      </p>
+      <!--<button *ngIf="!isSelected(articulo)" color="primary" ion-button outline item-end (click)="selectArticulo(articulo)">
+        <ion-icon name="add"></ion-icon>
+      </button>-->
+      <button *ngIf="isSelected(articulo)" color="primary" ion-button item-end>
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
+
+  <!--
+  <ion-list>
+    <ion-item>
+      <ion-icon name="time" item-start></ion-icon>
+      Actualizado {{ searchTime | date:'mediumTime' }}
+    </ion-item>
+  </ion-list>
+  -->
+
+</ion-content>

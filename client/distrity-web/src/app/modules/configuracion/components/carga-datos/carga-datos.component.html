@@ -1,0 +1,91 @@
+<!-- Navegacion y ubicacion -->
+<nav materialize>
+  <div class="nav-wrapper">
+    <div id="breadcrumbs-col" class="col s12">
+      <a routerLink="/" class="breadcrumb">Dashboard</a>
+      <a routerLink="/configuracion/dashboard" class="breadcrumb">Configuración</a>
+      <a routerLink="/configuracion/carga/datos" class="breadcrumb">Cargar datos</a>
+      <ul class="right hide-on-med-and-down" style="margin-top:15px">
+        <li>
+          <a routerLink="/configuracion/dashboard" class="waves-effect waves-light btn right">
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="section"></div>
+
+
+<div class="row">
+  <div class="col s12 m6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Información de artículos</span>
+        <p>Carga masiva de artículos mediante un archivo estructurado en formato JSON.</p>
+
+        <div class="file-field input-field">
+          <div class="btn">
+            <i class="material-icons left">cloud_upload</i>
+            <span>Subir y procesar</span>
+            <input type="file" (change)="fileChangeDatosArticulos($event)">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTONERA MORE OPTIONS -->
+<div class="fixed-action-btn center">
+  <a class="btn-floating btn-large light tooltipped" materialize="tooltip" data-position="left" data-tooltip="Acciones">
+    <i class="large material-icons">more_vert</i>
+  </a>
+  <ul>
+    <li>
+      <a class="btn-floating grey tooltipped" materialize="tooltip" data-position="left"
+        data-tooltip="Cancelar y volver" routerLink="/configuracion/dashboard">
+        <i class="material-icons">arrow_back</i>
+      </a>
+    </li>
+    <li>
+      <a class="btn-floating orange darken-1 tooltipped" materialize="tooltip" data-position="left"
+        data-tooltip="Ayuda y formato de datos" (click)="openModalHelp()">
+        <i class="material-icons">help_outline</i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- MODAL HELP -->
+<div id="modalHelp" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalHelp">
+  <div class="modal-content">
+    <h5>{{help.title}}</h5>
+    <p>{{help.header}}</p>
+    <p *ngFor="let text of help.body">{{text}}</p>
+    <p>{{ help.fileExample | json }}</p>
+    <a class='blue-text' href="{{help.linkExample}}" target="_self" download="articulos"><b>Descargar ejemplo</b></a>
+    <div class="modal-footer">
+      <a class="waves-effect waves-green btn-flat right" (click)="closeModalHelp()">Cancelar</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL OUTPUT -->
+<div id="modalOutput" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalOutput">
+  <div class="modal-content">
+    <h5>Estado del proceso</h5>
+    <p>Registros fallidos:</p>
+    <p>{{ output | json }}</p>
+    <div class="modal-footer">
+      <a class="waves-effect waves-green btn-flat right" (click)="closeModalOutput()">Aceptar</a>
+    </div>
+  </div>
+</div>
